@@ -20,21 +20,15 @@ const handler = NextAuth({
                 try {
 
                     const options = {
-                        endpoint: 'auth/login',
+                        endpoint: 'auth/signin',
                         method: 'POST' as const,
-                        body: JSON.stringify({
-                            email: credentials?.email,
-                            password: credentials?.password
-                        })
+                        body: credentials
                     }
+
                     const res = await FetchApi(options)
 
-                    const user = res.json()
-
-                    console.log('adsadaddsa');
-
-                    if (user) {
-                        return user
+                    if (res) {
+                        return res
                     }
 
                 } catch (error) {
@@ -47,17 +41,16 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
-                token.token = user.token
+                token.token = user.access_token
+                token.user = user.user
             }
             return token
         },
-        session({ session, token, user }) {
+        session({ session, token }) {
+
             if (token && session.user) {
-                session.user.identifier = user.identifier
-                session.user.avatar_url = user.avatar_url
-                session.user.id_type = user.id_type
-                session.user.role = user.role
-                session.user.subscriber_id = user.subscriber_id
+                session.user.access_token = token.token as string
+                session.user.user = token.user as any
             }
             return session
         },
@@ -66,6 +59,9 @@ const handler = NextAuth({
     session: {
         strategy: 'jwt',
         maxAge: 8 * 60 * 60, // 8 hours
+    },
+    pages: {
+        signIn: 'login'
     }
 })
 

@@ -30,12 +30,12 @@ export async function FetchApi(options: Props) {
         }).catch(error => {
             status = error.response ? error.response.status : 500;
             console.error("FetchApi Error:", error.response ? error.response.data : error.message);
-            throw error;
+            return null;
         })
 
     } catch (error) {
         console.error("FetchApi Exception:", error);
-        throw error;
+        return null;
     }
 
 }

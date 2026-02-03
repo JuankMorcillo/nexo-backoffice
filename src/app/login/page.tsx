@@ -1,14 +1,12 @@
 import React from 'react'
 import Login from './login'
 
-type Props = {}
-
-export default function page({ }: Props) {
+export default function page() {
     return (
-        <div>
-
-            <Login />
-
+        <div className='flex flex-col items-center w-full min-h-screen'>
+            <div className='flex items-center justify-center flex-1 w-full bg-linear-to-br from-blue-600 via-blue-400 to-cyan-300 animate-gradient-shift'>
+                <Login />
+            </div>
         </div>
     )
 }

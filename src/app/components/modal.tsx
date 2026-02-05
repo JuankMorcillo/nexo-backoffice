@@ -21,14 +21,14 @@ export default function Modal({ open, setOpen, title, children, position, classN
             {open && (
                 <div className={`fixed ${position ? position : 'inset-0 z-50'} flex items-center justify-center animate-fade-in ${classNames ? classNames : ''}`}>
                     <div className='bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6'>
-                        <div className='flex justify-between items-center mb-4'>
+                        {title || x_icon &&<div className='flex justify-between items-center mb-4'>
                             {
                                 title && <div className='font-bold text-lg'>{title}</div>
                             }
                             {
                                 x_icon && <button onClick={() => setOpen(false)}>{XICON}</button>
                             }
-                        </div>
+                        </div>}
                         <div>
                             {children}
                         </div>

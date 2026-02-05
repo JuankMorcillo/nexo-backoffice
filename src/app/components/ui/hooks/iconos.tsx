@@ -1,0 +1,50 @@
+import React from 'react'
+
+type iconProps = {
+    fill?: string;
+    classNames?: string;
+    strokeWidth?: number;
+    stroke?: string;
+}
+//<!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconProps) {
+
+    const HOMEICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M304 70.1C313.1 61.9 326.9 61.9 336 70.1L568 278.1C577.9 286.9 578.7 302.1 569.8 312C560.9 321.9 545.8 322.7 535.9 313.8L527.9 306.6L527.9 511.9C527.9 547.2 499.2 575.9 463.9 575.9L175.9 575.9C140.6 575.9 111.9 547.2 111.9 511.9L111.9 306.6L103.9 313.8C94 322.6 78.9 321.8 70 312C61.1 302.2 62 287 71.8 278.1L304 70.1zM320 120.2L160 263.7L160 512C160 520.8 167.2 528 176 528L224 528L224 424C224 384.2 256.2 352 296 352L344 352C383.8 352 416 384.2 416 424L416 528L464 528C472.8 528 480 520.8 480 512L480 263.7L320 120.3zM272 528L368 528L368 424C368 410.7 357.3 400 344 400L296 400C282.7 400 272 410.7 272 424L272 528z" />
+    </svg>
+
+    const CLIENTSICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M53.5 245.1L110.3 131.4C121.2 109.7 143.3 96 167.6 96L472.5 96C496.7 96 518.9 109.7 529.7 131.4L586.5 245.1C590.1 252.3 592 260.2 592 268.3C592 295.6 570.8 318 544 319.9L544 512C544 529.7 529.7 544 512 544C494.3 544 480 529.7 480 512L480 320L384 320L384 496C384 522.5 362.5 544 336 544L144 544C117.5 544 96 522.5 96 496L96 319.9C69.2 318 48 295.6 48 268.3C48 260.3 49.9 252.3 53.5 245.1zM160 320L160 432C160 440.8 167.2 448 176 448L304 448C312.8 448 320 440.8 320 432L320 320L160 320z" />
+    </svg>
+
+    const HAMBURGERICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M96 160C96 142.3 110.3 128 128 128L512 128C529.7 128 544 142.3 544 160C544 177.7 529.7 192 512 192L128 192C110.3 192 96 177.7 96 160zM96 320C96 302.3 110.3 288 128 288L512 288C529.7 288 544 302.3 544 320C544 337.7 529.7 352 512 352L128 352C110.3 352 96 337.7 96 320zM544 480C544 497.7 529.7 512 512 512L128 512C110.3 512 96 497.7 96 480C96 462.3 110.3 448 128 448L512 448C529.7 448 544 462.3 544 480z" />
+    </svg>
+
+    const ARROWRGHTICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+    </svg>
+
+    const ARROWLFT = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z" />
+    </svg>
+
+    const CIRCLEARROWRGHTICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM361 417C351.6 426.4 336.4 426.4 327.1 417C317.8 407.6 317.7 392.4 327.1 383.1L366.1 344.1L216 344.1C202.7 344.1 192 333.4 192 320.1C192 306.8 202.7 296.1 216 296.1L366.1 296.1L327.1 257.1C317.7 247.7 317.7 232.5 327.1 223.2C336.5 213.9 351.7 213.8 361 223.2L441 303.2C450.4 312.6 450.4 327.8 441 337.1L361 417.1z" />
+    </svg>
+
+    const CIRCLEARROWLFTICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM199 303L279 223C288.4 213.6 303.6 213.6 312.9 223C322.2 232.4 322.3 247.6 312.9 256.9L273.9 295.9L424 295.9C437.3 295.9 448 306.6 448 319.9C448 333.2 437.3 343.9 424 343.9L273.9 343.9L312.9 382.9C322.3 392.3 322.3 407.5 312.9 416.8C303.5 426.1 288.3 426.2 279 416.8L199 336.8C189.6 327.4 189.6 312.2 199 302.9z" />
+    </svg>
+
+    return {
+        clientsIcon: CLIENTSICON,
+        homeIcon: HOMEICON,
+        hamburgerIcon: HAMBURGERICON,
+        arrowRightIcon: ARROWRGHTICON,
+        arrowLeftIcon: ARROWLFT,
+        circleArrowRightIcon: CIRCLEARROWRGHTICON,
+        circleArrowLeftIcon: CIRCLEARROWLFTICON
+    }
+
+}

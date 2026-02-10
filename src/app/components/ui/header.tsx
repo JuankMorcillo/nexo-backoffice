@@ -28,7 +28,7 @@ export default function Header() {
     };
 
     return (
-        <div className='h-14 border-gray-200 shadow-md w-full flex items-center justify-between px-6 py-4 bg-linear-to-br from-blue-600 via-blue-400 to-cyan-300'>
+        <div className='h-14 border-gray-200 shadow-md w-full flex items-center justify-between px-6 py-4 bg-linear-to-br from-slate-700 to-slate-800'>
 
             <div className='ml-4 text-white font-bold text-lg'>
                 Nexo Backoffice

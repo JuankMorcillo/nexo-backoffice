@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function Sidebar() {
 
-    const { clientsIcon, homeIcon } = Iconos({ fill: 'currentColor', classNames: 'size-5', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { clientsIcon, homeIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
-    const { circleArrowLeftIcon, circleArrowRightIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6 rotate-180', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { boxOpenIcon } = Iconos({ fill: 'currentColor', classNames: 'size-15', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const dispatch = useDispatch()
 
@@ -34,22 +34,39 @@ export default function Sidebar() {
     ]
 
     return (
-        <aside className={`flex flex-col bg-linear-to-br from-blue-600 via-blue-400 to-cyan-300 
-            transition-all duration-300 ease-in-out will-change-transform lg:translate-x-0
+        <aside className={`flex flex-col bg-linear-to-br from-slate-700 to-slate-800
+            transition-all duration-500 ease-in-out will-change-transform lg:translate-x-0
             shadow-md
         ${expanded ? 'w-48' : 'w-23'}
         `}>
 
-            <div className='h-14 flex items-center justify-center border-b border-gray-200 mb-4'>
+            <div className='h-14 flex items-center justify-center text-white mb-4 mt-2'>
+                {boxOpenIcon}
             </div>
 
             <div className='flex flex-col'>
                 {SIDEBAROPTION.map((option) => (
-                    <div key={option.name} className='flex flex-1 flex-row items-center justify-center gap-1 border-b border-gray-200'>
-                        <div className="shrink-0 text-white">
+                    <div key={option.name} className={`flex items-center border-b 
+                    border-gray-200 px-4 py-3 cursor-pointer
+                     hover:bg-gray-100 transition-all duration-300                     
+                     text-white hover:text-slate-700                    
+                    `}>
+                        <div className="shrink-0 transition-all duration-300 ease-in-out"
+                            style={{
+                                transform: expanded ? 'translateX(0)' : 'translateX(1rem)',
+                            }}
+                        >
                             {option.icon}
                         </div>
-                        <span className={`ml-3 transition-all text-white duration-300 whitespace-nowrap opacity-100`}>
+                        <span className={`ml-3 transition-all 
+                            duration-300 whitespace-nowrap opacity-100
+                            ease-in-out font-bold
+                            `}
+                            style={{
+                                opacity: expanded ? 1 : 0,
+                                width: expanded ? 'auto' : 0,
+                            }}
+                        >
                             {option.name}
                         </span>
                     </div>

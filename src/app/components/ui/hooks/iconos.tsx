@@ -37,6 +37,10 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM199 303L279 223C288.4 213.6 303.6 213.6 312.9 223C322.2 232.4 322.3 247.6 312.9 256.9L273.9 295.9L424 295.9C437.3 295.9 448 306.6 448 319.9C448 333.2 437.3 343.9 424 343.9L273.9 343.9L312.9 382.9C322.3 392.3 322.3 407.5 312.9 416.8C303.5 426.1 288.3 426.2 279 416.8L199 336.8C189.6 327.4 189.6 312.2 199 302.9z" />
     </svg>
 
+    const BOXOPENICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M560.3 301.2C570.7 313 588.6 315.6 602.1 306.7C616.8 296.9 620.8 277 611 262.3L563 190.3C560.2 186.1 556.4 182.6 551.9 180.1L351.4 68.7C332.1 58 308.6 58 289.2 68.7L88.8 180C83.4 183 79.1 187.4 76.2 192.8L27.7 282.7C15.1 306.1 23.9 335.2 47.3 347.8L80.3 365.5L80.3 418.8C80.3 441.8 92.7 463.1 112.7 474.5L288.7 574.2C308.3 585.3 332.2 585.3 351.8 574.2L527.8 474.5C547.9 463.1 560.2 441.9 560.2 418.8L560.2 301.3zM320.3 291.4L170.2 208L320.3 124.6L470.4 208L320.3 291.4zM278.8 341.6L257.5 387.8L91.7 299L117.1 251.8L278.8 341.6z" />
+    </svg>
+
     return {
         clientsIcon: CLIENTSICON,
         homeIcon: HOMEICON,
@@ -44,7 +48,8 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         arrowRightIcon: ARROWRGHTICON,
         arrowLeftIcon: ARROWLFT,
         circleArrowRightIcon: CIRCLEARROWRGHTICON,
-        circleArrowLeftIcon: CIRCLEARROWLFTICON
+        circleArrowLeftIcon: CIRCLEARROWLFTICON,
+        boxOpenIcon: BOXOPENICON
     }
 
 }

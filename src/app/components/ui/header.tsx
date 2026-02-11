@@ -4,6 +4,8 @@ import useUserInitials from '@/src/hooks/useUserInitials';
 import { signOut, useSession } from 'next-auth/react';
 import React, { useState } from 'react'
 import Modal from '../modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSidebarExpanded } from '../../store/slices/uiSlice';
 
 const LOGOUTICON = {
     'name': 'logout',
@@ -23,53 +25,71 @@ export default function Header() {
     const { color, initials } = useUserInitials({ name: session?.user.user.name || '', lastName: session?.user.user.last_name })
     const [open, setOpen] = useState(false)
 
+    const dispatch = useDispatch()
+
+    const expanded = useSelector(selectSidebarExpanded)
+
+    const mainContentMargin = expanded
+        ? "lg:ml-[190px]"
+        : "lg:ml-[90px]";
+
+    const headerWidth = expanded
+        ? "lg:w-[calc(100%-190px)]"
+        : "lg:w-[calc(100%-90px)]";
+
+
     const handleLogout = () => {
         signOut({ redirect: true, callbackUrl: '/login' });
     };
 
     return (
-        <div className='h-14 border-gray-200 shadow-md w-full flex items-center justify-between px-6 py-4 bg-linear-to-br from-slate-700 to-slate-800'>
+        <>
+            {session && <div className={`h-14 border-gray-200 shadow-md w-full flex items-center 
+            transition-all duration-500 ease-in-out
+        justify-between px-6 py-4 bg-linear-to-br from-slate-700 to-slate-800
+        ${mainContentMargin} ${headerWidth}`}>
 
-            <div className='ml-4 text-white font-bold text-lg'>
-                Nexo Backoffice
-            </div>
+                <div className='ml-4 text-white font-bold text-lg'>
+                    Nexo Backoffice
+                </div>
 
-            <div className='flex items-center mr-4'>
-                <button
-                    className="w-10 h-10 cursor-pointer rounded-full text-white font-bold text-lg shadow"
-                    style={{ backgroundColor: color }}
-                    onClick={() => setOpen(!open)}
-                >
-                    {initials}
-                </button>
-            </div>
+                <div className='flex items-center mr-4'>
+                    <button
+                        className="w-10 h-10 cursor-pointer rounded-full text-white font-bold text-lg shadow"
+                        style={{ backgroundColor: color }}
+                        onClick={() => setOpen(!open)}
+                    >
+                        {initials}
+                    </button>
+                </div>
 
-            <Modal
-                open={open}
-                setOpen={setOpen}
-                children={
-                    <div className='flex flex-col gap-2'>
-                        <div className='flex justify-center border-b border-gray-200 cursor-default'>
-                            <span className='font-bold'>{session?.user.user.name} {session?.user.user.last_name}</span>
-                        </div>
-                        <div className='flex flex-row justify-center 
+                <Modal
+                    open={open}
+                    setOpen={setOpen}
+                    children={
+                        <div className='flex flex-col gap-2'>
+                            <div className='flex justify-center border-b border-gray-200 cursor-default'>
+                                <span className='font-bold'>{session?.user.user.name} {session?.user.user.last_name}</span>
+                            </div>
+                            <div className='flex flex-row justify-center 
                         gap-2 mb-2 border-b border-gray-200 text-gray-500 cursor-pointer
                         hover:bg-gray-300 rounded transition-colors duration-300 
                         '>
-                            {USERICON} <span className='font-semibold'>Perfil</span>
+                                {USERICON} <span className='font-semibold'>Perfil</span>
+                            </div>
+                            <button className='flex items-center justify-center w-full bg-red-500 
+                        text-white rounded p-2 cursor-pointer'
+                                onClick={handleLogout}
+                            >
+                                {LOGOUTICON.icon} Cerrar sesión
+                            </button>
                         </div>
-                        <button className='flex items-center justify-center w-full bg-red-500 
-                        text-white rounded p-2 cursor-pointer' 
-                        onClick={handleLogout}
-                        >
-                            {LOGOUTICON.icon} Cerrar sesión
-                        </button>
-                    </div>
-                }
-                classNames='w-50'
-                position='right-1 z-50 top-14 h-auto'
-            />
+                    }
+                    classNames='w-50'
+                    position='right-1 z-50 top-14 h-auto'
+                />
 
-        </div>
+            </div>}
+        </>
     )
 }

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import Sidebar from "./components/ui/sidebar";
+import Header from "./components/ui/header";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -36,6 +38,8 @@ export default function RootLayout({
         className={`${inter.variable} antialiased`}
       >
         <Providers>
+          <Sidebar />
+          <Header />
           {children}
         </Providers>
       </body>

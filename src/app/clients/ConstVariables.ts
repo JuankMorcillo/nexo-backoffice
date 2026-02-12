@@ -1,4 +1,6 @@
-export const columns = [
+import { Column } from "../types/table";
+
+export const columns: Column<any>[] = [
     {
         accessorKey: 'name',
         header: 'Nombre',

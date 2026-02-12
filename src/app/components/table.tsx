@@ -263,23 +263,23 @@ export default function MyTable({ columns, actions, topActions, getInfo, options
                 gap: '10px',
             }}>
                 {
-                    actions?.map((accion, index) => {
+                    actions?.map((action, index) => {
                         return <div key={index}>
                             <button
-                                color='light'
+                                className="text-black cursor-pointer"
                                 key={index}
                                 type='button'
                                 style={{
-                                    cursor: (row.original.status == 0 && accion.name == 'eliminar')
-                                        || (row.original.status == 1 && accion.name == 'activar')
+                                    cursor: (row.original.status == 0 && action.name == 'eliminar')
+                                        || (row.original.status == 1 && action.name == 'activar')
                                         ? 'auto'
                                         : 'pointer',
                                 }}
-                                disabled={((row.original.estado == 'A FACTURAR' || row.original.estado == 'CANCELADA') && accion.name == 'Editar')}
+                                // disabled={((row.original.estado == 'A FACTURAR' || row.original.estado == 'CANCELADA') && accion.name == 'Editar')}
                                 onClick={(e) => {
-                                    accion.action(row.original)
+                                    action.action(row.original)
                                 }}>
-                                {accion.icon}
+                                {action.icon}
                             </button>
                         </div>
                     })
@@ -295,15 +295,8 @@ export default function MyTable({ columns, actions, topActions, getInfo, options
                             <button
                                 key={index}
                                 onClick={(e) => { item.action() }}
-                                className='flex items-center justify-center gap-1 md:gap-2 whitespace-nowrap xs:px-3 xs:py-2 md:px-5'
-                                style={
-                                    {
-                                        border: "1px solid gray",
-                                        // padding: "10px 30px",
-                                        borderRadius: "10px",
-                                        background: "none",
-                                        cursor: "pointer",
-                                    }}
+                                className='flex items-center justify-center gap-1 md:gap-2 whitespace-nowrap xs:px-3 xs:py-2 md:px-5 cursor-pointer
+                                rounded-md border p-1'
                             >
                                 {item.name}
                             </button>

@@ -1,6 +1,8 @@
 import {
     getClients,
     createClient,
+    getClientById,
+    editClient
 } from "@/src/lib/api/clients";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Client, FetchClientsPayload } from "@/src/app/types/clients";
@@ -31,6 +33,18 @@ export const fetchClients = createAsyncThunk<any, FetchClientsPayload, { rejectV
     }
 )
 
+export const fetchClientById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'clients/fetchClientById',
+    async ({ token, id }, { rejectWithValue }) => {
+        try {
+            const response = await getClientById(token, id);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+)
+
 export const createClientSlice = createAsyncThunk<any, Client, { rejectValue: string }>(
     'clients/createClient',
     async (clientData, { rejectWithValue }) => {
@@ -41,6 +55,21 @@ export const createClientSlice = createAsyncThunk<any, Client, { rejectValue: st
 
             return response;
 
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+)
+
+export const editClientSlice = createAsyncThunk<any, Client, { rejectValue: string }>(
+    'clients/editClient',
+    async (clientData, { rejectWithValue }) => {
+        try {
+            const { token, ...data } = clientData;
+
+            const response = await editClient(token || '', data);
+
+            return response;
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
         }
@@ -75,6 +104,21 @@ const clientsSlice = createSlice({
                 state.message = action.payload || 'Failed to fetch clients';
             });
 
+        // Fetch Client By ID
+        builder
+            .addCase(fetchClientById.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchClientById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = 'Client created successfully'
+            })
+            .addCase(fetchClientById.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Failed to create client';
+            })
+
         // Create Client
         builder
             .addCase(createClientSlice.pending, (state) => {
@@ -88,6 +132,21 @@ const clientsSlice = createSlice({
             .addCase(createClientSlice.rejected, (state, action) => {
                 state.loading = false;
                 state.message = action.payload || 'Failed to create client';
+            })
+
+        // Edit Client
+        builder
+            .addCase(editClientSlice.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(editClientSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = 'Client edited successfully'
+            })
+            .addCase(editClientSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Failed to edit client';
             })
     },
 })

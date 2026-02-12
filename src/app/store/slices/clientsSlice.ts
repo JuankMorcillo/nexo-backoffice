@@ -1,6 +1,9 @@
-import { getClients } from "@/src/lib/api/clients";
+import {
+    getClients,
+    createClient,
+} from "@/src/lib/api/clients";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { FetchClientsPayload } from "@/src/app/types/clients";
+import { Client, FetchClientsPayload } from "@/src/app/types/clients";
 
 const initialState = {
     clients: [],
@@ -22,6 +25,22 @@ export const fetchClients = createAsyncThunk<any, FetchClientsPayload, { rejectV
         try {
             const response = await getClients(token, params);
             return response;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+)
+
+export const createClientSlice = createAsyncThunk<any, Client, { rejectValue: string }>(
+    'clients/createClient',
+    async (clientData, { rejectWithValue }) => {
+        try {
+            const { token, ...data } = clientData;
+
+            const response = await createClient(token || '', data);
+
+            return response;
+
         } catch (error: any) {
             return rejectWithValue(error.response?.data || error.message);
         }
@@ -55,6 +74,21 @@ const clientsSlice = createSlice({
                 state.loading = false;
                 state.message = action.payload || 'Failed to fetch clients';
             });
+
+        // Create Client
+        builder
+            .addCase(createClientSlice.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(createClientSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = 'Client created successfully'
+            })
+            .addCase(createClientSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Failed to create client';
+            })
     },
 })
 

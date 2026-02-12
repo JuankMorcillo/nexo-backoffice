@@ -7,11 +7,16 @@ import { Params } from '../types/params'
 import { AppDispatch } from '../store'
 import MyTable from '../components/table'
 import { columns } from './ConstVariables'
+import { useState } from 'react';
+import Modal from '../components/modal';
+import { Actions, TopActions } from '../types/table';
+import CreateClient from './create/page';
 
 export default function Clients() {
 
     const dispatch = useDispatch<AppDispatch>()
     const { data: session } = useSession()
+    const [modalCreate, setModalCreate] = useState(false)
 
     const handleFetchClients = async (params: Params) => {
         if (session?.user.access_token) {
@@ -26,12 +31,30 @@ export default function Clients() {
         return { meta: { total: 0 }, data: [] };
     }
 
+    const topActions: TopActions[] = [
+        {
+            name: 'Crear Cliente',
+            action: () => setModalCreate(true)
+        }
+    ]
+
     return (
         <>
             <MyTable
                 columns={columns}
                 getInfo={handleFetchClients}
                 options={{ bd: true }}
+                topActions={topActions}
+            />
+
+            <Modal
+                open={modalCreate}
+                setOpen={setModalCreate}
+                title="Crear Cliente"
+                children={
+                    <CreateClient />
+                }
+                x_icon={true}
             />
 
         </>

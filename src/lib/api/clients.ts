@@ -1,8 +1,9 @@
+import { Client } from "@/src/app/types/clients";
 import { FetchApi } from "./fetchApi"
 
 export async function getClients(token: string, params = {}) {
 
-    const options = {
+    const options: OptionsProps = {
         endpoint: 'clients',
         method: 'GET' as const,
         headers: {
@@ -16,4 +17,25 @@ export async function getClients(token: string, params = {}) {
     } catch (error) {
         console.log(error);
     }
+}
+
+export async function createClient(token: string, data: Client) {
+
+    const options: OptionsProps = {
+        endpoint: 'clients',
+        method: 'POST' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: data
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 }

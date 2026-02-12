@@ -1,6 +1,6 @@
 import { Params } from "./params";
 
-type Column<T> = {
+export type Column<T> = {
     accessorKey: string;
     header: string;
     cell?: (value: any) => React.ReactNode;
@@ -11,15 +11,15 @@ type Column<T> = {
     filterFn?: 'equals',
 }
 
-type Actions = {
+export type Actions = {
     name: string;
     icon: React.ReactNode;
     action: (value: any) => void;
 }
 
-type TopActions = {
+export type TopActions = {
     name: string;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     action: () => void;
 }
 

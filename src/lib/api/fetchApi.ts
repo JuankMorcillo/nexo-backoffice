@@ -1,18 +1,9 @@
 import axios from "axios";
 import { API_BASE_URL } from '@/src/lib/api/config'
 
-type Props = {
-    endpoint: string,
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    data?: any,
-    body?: any,
-    headers?: any,
-    params?: any
-}
-
 let status: number = 200;
 
-export async function FetchApi(options: Props) {
+export async function FetchApi(options: OptionsProps) {
     const { endpoint, method, data, body, headers, params } = options;
 
     const url = `${API_BASE_URL}/${endpoint}`;

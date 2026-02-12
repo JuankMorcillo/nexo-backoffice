@@ -14,6 +14,7 @@ declare module "next-auth" {
             name: string,
             last_name: string,
             avatar: string | null,
+            subscribers_id: number
         }
     }
 

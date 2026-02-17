@@ -14,11 +14,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useSession } from "next-auth/react";
 import { Params } from "../types/params";
 import { tableConstants } from "@/src/hooks/table_constants";
+import { useSelector } from "react-redux";
+import { selectReload, triggerReload } from "../store/slices/reloadSlice";
 
 
 export default function MyTable({ columns, actions, topActions, getInfo, options }: TableProps) {
 
     const { data: status } = useSession();
+    const reload = useSelector(selectReload)
     const [data, setData] = useState<any>([])
     const { BASEBACKGROUNDCOLOR, SHADES, TABLETHEME } = tableConstants();
     const [columnFilters, setColumnFilter] = useState<MRT_ColumnFiltersState>([]);
@@ -311,6 +314,7 @@ export default function MyTable({ columns, actions, topActions, getInfo, options
 
     useEffect(() => {
         if (options.bd) {
+
             if (!data?.length) {
                 setIsLoading(true);
             } else {
@@ -334,7 +338,6 @@ export default function MyTable({ columns, actions, topActions, getInfo, options
                     console.error(error);
                 })
 
-
             } catch (error) {
                 console.error(error);
                 return;
@@ -350,7 +353,8 @@ export default function MyTable({ columns, actions, topActions, getInfo, options
         pagination.pageIndex,
         pagination.pageSize,
         sorting,
-        status
+        status,
+        reload
     ])
 
     return (

@@ -19,6 +19,8 @@ const initialState = {
     },
     loading: false,
     message: '',
+    processMessage: '',
+    success: false,
 }
 
 export const fetchClients = createAsyncThunk<any, FetchClientsPayload, { rejectValue: string }>(
@@ -71,7 +73,8 @@ export const editClientSlice = createAsyncThunk<any, Client, { rejectValue: stri
 
             return response;
         } catch (error: any) {
-            return rejectWithValue(error.response?.data || error.message);
+            const errorMessage = error.response?.data?.message || error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
         }
     }
 )
@@ -86,6 +89,9 @@ const clientsSlice = createSlice({
         clearMessage(state) {
             state.message = '';
         },
+        clearProcessMessage(state) {
+            state.processMessage = '';
+        }
     },
     extraReducers(builder) {
         // Fetch Clients
@@ -112,7 +118,7 @@ const clientsSlice = createSlice({
             })
             .addCase(fetchClientById.fulfilled, (state, action) => {
                 state.loading = false;
-                state.message = 'Client created successfully'
+                state.message = 'Client fechted successfully'
             })
             .addCase(fetchClientById.rejected, (state, action) => {
                 state.loading = false;
@@ -123,41 +129,47 @@ const clientsSlice = createSlice({
         builder
             .addCase(createClientSlice.pending, (state) => {
                 state.loading = true;
-                state.message = '';
+                state.processMessage = '';
             })
             .addCase(createClientSlice.fulfilled, (state, action) => {
                 state.loading = false;
-                state.message = 'Client created successfully'
+                state.processMessage = action.payload.message || 'Client created successfully'
+                state.success = true;
             })
             .addCase(createClientSlice.rejected, (state, action) => {
                 state.loading = false;
-                state.message = action.payload || 'Failed to create client';
+                state.processMessage = action.payload || 'Failed to create client';
+                state.success = false;
             })
 
         // Edit Client
         builder
             .addCase(editClientSlice.pending, (state) => {
                 state.loading = true;
-                state.message = '';
+                state.processMessage = '';
             })
             .addCase(editClientSlice.fulfilled, (state, action) => {
                 state.loading = false;
-                state.message = 'Client edited successfully'
+                state.processMessage = action.payload.message || 'Client updated successfully'
+                state.success = true;
             })
             .addCase(editClientSlice.rejected, (state, action) => {
                 state.loading = false;
-                state.message = action.payload || 'Failed to edit client';
+                state.processMessage = action.payload || 'Failed to edit client';
+                state.success = false;
             })
     },
 })
 
-export const { setParams, clearMessage } = clientsSlice.actions;
+export const { setParams, clearMessage, clearProcessMessage } = clientsSlice.actions;
 
 // Selectors
 export const selectClients = (state: any) => state.clients.clients;
 export const selectTotalClients = (state: any) => state.clients.total;
 export const selectClientsParams = (state: any) => state.clients.params;
 export const selectClientsLoading = (state: any) => state.clients.loading;
+export const selectClientsSuccess = (state: any) => state.clients.success;
 export const selectClientsMessage = (state: any) => state.clients.message;
+export const selectClientsProcessMessage = (state: any) => state.clients.processMessage;
 
 export default clientsSlice.reducer;

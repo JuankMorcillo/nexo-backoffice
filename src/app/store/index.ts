@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import uiReducer from './slices/uiSlice';
 import clientsReducer from './slices/clientsSlice'
 import reloadReducer from './slices/reloadSlice';
+import toastReducer from './slices/toastSlice';
 
 export const store = configureStore({
     reducer: {
         ui: uiReducer,
         clients: clientsReducer,
         reload: reloadReducer,
+        toast: toastReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

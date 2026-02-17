@@ -5,8 +5,9 @@ import Inputs from '../../components/inputs';
 import { AppDispatch } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
-import { createClientSlice, editClientSlice, fetchClientById } from '../../store/slices/clientsSlice';
+import { editClientSlice, fetchClientById } from '../../store/slices/clientsSlice';
 import { Client } from '../../types/clients';
+import { triggerReload } from '../../store/slices/reloadSlice';
 
 type Props = {
     id: number;
@@ -80,7 +81,7 @@ export default function EditClient({ id }: Props) {
         }
     }
 
-    const handleEditPhones = async () => {
+    const handleEditClient = async () => {
         if (session?.user.access_token) {
             const result = await dispatch(
                 editClientSlice({ token: session.user.access_token, ...info })
@@ -94,6 +95,7 @@ export default function EditClient({ id }: Props) {
                     phone: '',
                     subscribers_id: session?.user.user.subscribers_id
                 })
+                dispatch(triggerReload())
             }
 
         }
@@ -106,7 +108,7 @@ export default function EditClient({ id }: Props) {
 
     useEffect(() => {
         if (info.nit && info.name && info.address && info.phone) {
-            handleEditPhones();
+            handleEditClient();
         }
     }, [info])
 

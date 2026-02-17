@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { createClientSlice } from '../../store/slices/clientsSlice';
 import { Client } from '../../types/clients';
+import { triggerReload } from '../../store/slices/reloadSlice';
 
 export default function CreateClient() {
 
@@ -59,7 +60,7 @@ export default function CreateClient() {
         textButton: 'Guardar Cliente',
     }
 
-    const handleCreatePhones = async () => {
+    const handleCreateClient = async () => {
         if (session?.user.access_token) {
             const result = await dispatch(
                 createClientSlice({ token: session.user.access_token, ...info })
@@ -73,6 +74,7 @@ export default function CreateClient() {
                     phone: '',
                     subscribers_id: session?.user.user.subscribers_id
                 })
+                dispatch(triggerReload())
             }
 
         }
@@ -80,7 +82,7 @@ export default function CreateClient() {
 
     useEffect(() => {
         if (info.nit && info.name && info.address && info.phone) {
-            handleCreatePhones();
+            handleCreateClient();
         }
     }, [info])
 

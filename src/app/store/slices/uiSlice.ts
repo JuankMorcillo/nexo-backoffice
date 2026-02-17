@@ -12,13 +12,10 @@ const uiSlice = createSlice({
         toggleSidebar(state) {
             state.sidebarExpanded = !state.sidebarExpanded
         },
-        setSidebarExpanded(state, action) {
-            state.sidebarExpanded = action.payload
-        }
     }
 })
 
-export const { toggleSidebar, setSidebarExpanded } = uiSlice.actions
+export const { toggleSidebar } = uiSlice.actions
 
 export const selectSidebarExpanded = (state: { ui: { sidebarExpanded: boolean } }) => state.ui.sidebarExpanded;
 

@@ -91,6 +91,9 @@ const clientsSlice = createSlice({
         },
         clearProcessMessage(state) {
             state.processMessage = '';
+        },
+        setSuccess(state, action) {
+            state.success = action.payload;
         }
     },
     extraReducers(builder) {
@@ -161,7 +164,7 @@ const clientsSlice = createSlice({
     },
 })
 
-export const { setParams, clearMessage, clearProcessMessage } = clientsSlice.actions;
+export const { setParams, clearMessage, clearProcessMessage, setSuccess } = clientsSlice.actions;
 
 // Selectors
 export const selectClients = (state: any) => state.clients.clients;

@@ -5,7 +5,7 @@ import Inputs from '../../components/inputs';
 import { AppDispatch } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
-import { editClientSlice, fetchClientById, selectClientsProcessMessage, selectClientsSuccess } from '../../store/slices/clientsSlice';
+import { clearProcessMessage, editClientSlice, fetchClientById, selectClientsProcessMessage, selectClientsSuccess, setSuccess } from '../../store/slices/clientsSlice';
 import { Client } from '../../types/clients';
 import { triggerReload } from '../../store/slices/reloadSlice';
 import { fillToastInfo } from '../../store/slices/toastSlice';
@@ -118,10 +118,11 @@ export default function EditClient({ id }: Props) {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
+            clearProcessMessage()
         }
 
 
-        if (success) dispatch(triggerReload())
+        if (success) dispatch(triggerReload()); dispatch(setSuccess(false))
     }, [message, success])
 
 

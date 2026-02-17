@@ -21,12 +21,19 @@ export async function FetchApi(options: OptionsProps) {
         }).catch(error => {
             status = error.response ? error.response.status : 500;
             console.error("FetchApi Error:", error.response ? error.response.data : error.message);
-            return null;
+
+            let message = ''
+
+            if (error.response.data?.message instanceof Array) {
+                message = error.response.data.message.join(', ');
+                throw message
+            }
+            throw error.response.data?.message;
         })
 
     } catch (error) {
         console.error("FetchApi Exception:", error);
-        return null;
+        throw error;
     }
 
 }

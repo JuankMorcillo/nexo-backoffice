@@ -16,6 +16,7 @@ export async function getClients(token: string, params = {}) {
         return await FetchApi(options);
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }
 
@@ -33,6 +34,7 @@ export async function getClientById(token: string, id: number) {
         return await FetchApi(options);
     } catch (error) {
         console.log(error);
+        throw error;
     }
 
 }
@@ -52,6 +54,7 @@ export async function createClient(token: string, data: Client) {
         return await FetchApi(options);
     } catch (error) {
         console.log(error);
+        throw error;
     }
 
 }
@@ -71,6 +74,7 @@ export async function editClient(token: string, data: Client) {
         return await FetchApi(options);
     } catch (error) {
         console.log(error);
+        throw error;
     }
 
 }

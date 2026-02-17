@@ -5,9 +5,11 @@ import Inputs from '../../components/inputs';
 import { AppDispatch } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
-import { editClientSlice, fetchClientById } from '../../store/slices/clientsSlice';
+import { editClientSlice, fetchClientById, selectClientsProcessMessage, selectClientsSuccess } from '../../store/slices/clientsSlice';
 import { Client } from '../../types/clients';
 import { triggerReload } from '../../store/slices/reloadSlice';
+import { fillToastInfo } from '../../store/slices/toastSlice';
+import Iconos from '../../components/ui/hooks/iconos';
 
 type Props = {
     id: number;
@@ -19,6 +21,12 @@ export default function EditClient({ id }: Props) {
     const { data: session } = useSession()
 
     const loading = useSelector((state: any) => state.clients.loading)
+    const message = useSelector(selectClientsProcessMessage)
+    const success = useSelector(selectClientsSuccess)
+
+    const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
+
 
     const [info, setInfo] = useState<Client>({
         name: '',
@@ -95,11 +103,27 @@ export default function EditClient({ id }: Props) {
                     phone: '',
                     subscribers_id: session?.user.user.subscribers_id
                 })
-                dispatch(triggerReload())
             }
 
         }
     }
+
+    useEffect(() => {
+
+        if (message) {
+            dispatch(fillToastInfo({
+                id: new Date().getTime().toString(),
+                message: message || 'Cliente actualizado exitosamente',
+                position: 'top-right',
+                icon: success ? successIcon : circleXMarkIcon,
+                duration: 3000,
+            }))
+        }
+
+
+        if (success) dispatch(triggerReload())
+    }, [message, success])
+
 
     useEffect(() => {
         fetchClient();

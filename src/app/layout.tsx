@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Sidebar from "./components/ui/sidebar";
 import Header from "./components/ui/header";
+import Toast from "./components/ui/toast";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
         className={`${inter.variable} antialiased`}
       >
         <Providers>
+          <Toast />
           <Sidebar />
           <Header />
           {children}

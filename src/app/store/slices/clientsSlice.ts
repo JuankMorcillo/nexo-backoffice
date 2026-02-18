@@ -58,7 +58,8 @@ export const createClientSlice = createAsyncThunk<any, Client, { rejectValue: st
             return response;
 
         } catch (error: any) {
-            return rejectWithValue(error.response?.data || error.message);
+            const errorMessage = error.response?.data?.message || error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
         }
     }
 )

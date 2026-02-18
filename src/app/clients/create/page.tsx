@@ -5,9 +5,11 @@ import Inputs from '../../components/inputs';
 import { AppDispatch } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
-import { createClientSlice } from '../../store/slices/clientsSlice';
+import { clearProcessMessage, createClientSlice, selectClientsProcessMessage, selectClientsSuccess, setSuccess } from '../../store/slices/clientsSlice';
 import { Client } from '../../types/clients';
 import { triggerReload } from '../../store/slices/reloadSlice';
+import Iconos from '../../components/ui/hooks/iconos';
+import { fillToastInfo } from '../../store/slices/toastSlice';
 
 export default function CreateClient() {
 
@@ -15,6 +17,11 @@ export default function CreateClient() {
     const { data: session } = useSession()
 
     const loading = useSelector((state: any) => state.clients.loading)
+    const message = useSelector(selectClientsProcessMessage)
+    const success = useSelector(selectClientsSuccess)
+
+    const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const [info, setInfo] = useState<Client>({
         name: '',
@@ -74,11 +81,27 @@ export default function CreateClient() {
                     phone: '',
                     subscribers_id: session?.user.user.subscribers_id
                 })
-                dispatch(triggerReload())
             }
 
         }
     }
+
+    useEffect(() => {
+
+        if (message) {
+            dispatch(fillToastInfo({
+                id: new Date().getTime().toString(),
+                message: message || 'Cliente actualizado exitosamente',
+                position: 'top-right',
+                icon: success ? successIcon : circleXMarkIcon,
+                duration: 3000,
+            }))
+            clearProcessMessage()
+        }
+
+
+        if (success) dispatch(triggerReload()); dispatch(setSuccess(false))
+    }, [message, success])
 
     useEffect(() => {
         if (info.nit && info.name && info.address && info.phone) {

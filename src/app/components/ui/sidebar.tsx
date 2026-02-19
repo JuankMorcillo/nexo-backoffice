@@ -12,7 +12,7 @@ export default function Sidebar() {
 
     const { data: session } = useSession()
 
-    const { clientsIcon, homeIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { clientsIcon, homeIcon, hammerIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const { boxOpenIcon } = Iconos({ fill: 'currentColor', classNames: 'size-15', stroke: 'currentColor', strokeWidth: 1.5 })
 
@@ -42,6 +42,11 @@ export default function Sidebar() {
             name: 'Clientes',
             href: '/clients',
             icon: clientsIcon
+        },
+        {
+            name: 'Equipos',
+            href: '/equipments',
+            icon: hammerIcon
         }
     ]
 

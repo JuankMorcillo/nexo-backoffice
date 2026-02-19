@@ -12,7 +12,7 @@ declare global {
         set?: (value: any) => void,
         options?: Array<{
             label: string,
-            value: string
+            value: string | number
         }>
         error?: {
             message: string

@@ -35,7 +35,7 @@ export default function Sidebar() {
     const SIDEBAROPTION = [
         {
             name: 'Dashboard',
-            href: '/dashboard',
+            href: '/',
             icon: homeIcon
         },
         {

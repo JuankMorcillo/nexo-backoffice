@@ -1,4 +1,4 @@
-import { createBranch, getBranches } from "@/src/lib/api/branches";
+import { createBranch, editBranch, getBranchById, getBranches } from "@/src/lib/api/branches";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Branch } from "../../types/branches";
 
@@ -30,6 +30,22 @@ export const fetchBranches = createAsyncThunk<any, FetchPayload, { rejectValue: 
     }
 )
 
+export const fetchBranchById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'branches/fetchBranchById',
+    async ({ token, id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getBranchById(token, id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
 export const createBranchSlice = createAsyncThunk<any, { branch: Branch, token: string }, { rejectValue: string }>(
     'branches/createBranch',
     async (branchData, { rejectWithValue }) => {
@@ -44,6 +60,25 @@ export const createBranchSlice = createAsyncThunk<any, { branch: Branch, token: 
             const errorMessage = error.response?.data?.message || error || 'Error desconocido';
             return rejectWithValue(errorMessage);
         }
+    }
+)
+
+export const editBranchSlice = createAsyncThunk<any, { branch: Branch, token: string }, { rejectValue: string }>(
+    'branches/editBranch',
+    async (branchData, { rejectWithValue }) => {
+
+        try {
+
+            const { token, ...data } = branchData;
+
+            const result = await editBranch(token || '', data.branch);
+
+            return result;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
     }
 )
 
@@ -81,6 +116,22 @@ const branchesSlice = createSlice({
                 state.message = action.payload || 'Error al cargar las sucursales';
             })
 
+        // Fetch Branch By Id
+        builder
+            .addCase(fetchBranchById.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchBranchById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.branches = action.payload.data || [];
+                state.total = action.payload.total || 0;
+            })
+            .addCase(fetchBranchById.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar la sucursal';
+            })
+
         // Create Branch
         builder
             .addCase(createBranchSlice.pending, (state) => {
@@ -96,6 +147,24 @@ const branchesSlice = createSlice({
             .addCase(createBranchSlice.rejected, (state, action) => {
                 state.loading = false;
                 state.processMessage = action.payload || 'Error al crear la sucursal';
+                state.success = false;
+            })
+
+        // Edit Branch
+        builder
+            .addCase(editBranchSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+                state.success = false;
+            })
+            .addCase(editBranchSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload.message || 'Sucursal editada exitosamente';
+                state.success = true;
+            })
+            .addCase(editBranchSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al editar la sucursal';
                 state.success = false;
             })
     }

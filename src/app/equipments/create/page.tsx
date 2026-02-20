@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../store'
 import { useSession } from 'next-auth/react'
-import { clearProcessMessageEqu, createEquipmentSlice, selectEquipmentLoading, selectEquipmentMessage, selectEquipmentProcessMessage, selectEquipmentSuccess } from '../../store/slices/EquipmentSlice'
+import { clearProcessMessageEqu, createEquipmentSlice, selectEquipmentLoading, selectEquipmentMessage, selectEquipmentProcessMessage, selectEquipmentSuccess, setSuccessEqu } from '../../store/slices/EquipmentSlice'
 import Iconos from '../../components/ui/hooks/iconos'
 import { Equipment } from '../../types/equipment'
 import Inputs from '../../components/inputs'
 import { fillToastInfo } from '../../store/slices/toastSlice'
 import { triggerReload } from '../../store/slices/reloadSlice'
-import { setSuccess } from '../../store/slices/clientsSlice'
 
 export default function CreateEquipment() {
 
@@ -101,7 +100,7 @@ export default function CreateEquipment() {
         }
 
 
-        if (success) dispatch(triggerReload()); dispatch(setSuccess(false))
+        if (success) dispatch(triggerReload()); dispatch(setSuccessEqu(false))
 
     }, [message, success])
 

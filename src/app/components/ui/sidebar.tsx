@@ -6,11 +6,15 @@ import { toggleSidebar, selectSidebarExpanded } from '../../store/slices/uiSlice
 import Iconos from './hooks/iconos'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
-
+import { useState } from 'react';
 
 export default function Sidebar() {
 
     const { data: session } = useSession()
+
+    const [subMenu, setSubMenu] = useState('')
+
+    const [expandedSubMenu, setExpandedSubMenu] = useState(false)
 
     const { clientsIcon, homeIcon, hammerIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
@@ -28,6 +32,12 @@ export default function Sidebar() {
         dispatch(toggleSidebar())
     }
 
+    const toggleSubmenu = (itemName: string) => {
+        if (!expanded) return
+
+        setSubMenu(subMenu === itemName ? '' : itemName)
+    }
+
     const navigateTo = (href: string) => {
         router.push(href);
     }
@@ -41,7 +51,13 @@ export default function Sidebar() {
         {
             name: 'Clientes',
             href: '/clients',
-            icon: clientsIcon
+            icon: clientsIcon,
+            options: [
+                {
+                    name: 'Sucursales',
+                    href: '/branches',
+                }
+            ]
         },
         {
             name: 'Equipos',
@@ -65,33 +81,67 @@ export default function Sidebar() {
 
                     <div className='flex flex-col'>
                         {SIDEBAROPTION.map((option) => (
-                            <div key={option.name} className={`flex items-center border-b 
-                     px-4 py-3 cursor-pointer
-                     transition-all duration-300   
-                     ${pathname === option.href ? 'text-slate-700 bg-gray-100' : 'text-white border-gray-200'}                  
-                      hover:text-slate-700 hover:bg-gray-100                   
-                    `}
-                                onClick={() => navigateTo(option.href)}>
-                                <div className="shrink-0 transition-all duration-300 ease-in-out"
-                                    style={{
-                                        transform: expanded ? 'translateX(0)' : 'translateX(1rem)',
-                                    }}
-                                >
-                                    {option.icon}
+                            <div className='w-full'>
+
+
+                                <div key={option.name} className={`flex items-center border-b px-4 py-3 cursor-pointertransition-all duration-300   
+                                ${pathname === option.href ? 'text-slate-700 bg-gray-100' : 'text-white border-gray-200'}                  
+                                hover:text-slate-700 hover:bg-gray-100                   
+                                `}
+                                    onClick={() => navigateTo(option.href)}>
+                                    <div className="shrink-0 transition-all duration-300 ease-in-out"
+                                        style={{
+                                            transform: expanded ? 'translateX(0)' : 'translateX(1rem)',
+                                        }}
+                                    >
+                                        {option.icon}
+                                    </div>
+                                    <span className={`ml-3 transition-all duration-300 whitespace-nowrap opacity-100 ease-in-out font-bold`}
+                                        style={{
+                                            opacity: expanded ? 1 : 0,
+                                            width: expanded ? 'auto' : 0,
+                                        }}
+                                    >
+                                        {option.name}
+                                    </span>
+
+                                    {
+                                        option.options && expanded && (
+                                            <div className='shrink-0'
+                                                onClick={() => toggleSubmenu(option.name)}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill='currentColor'
+                                                    className={`size-6 transition-transform duration-500 ease-in-out ${subMenu === option.name ? 'rotate-180' : 'rotate-0'}`}>
+                                                    <path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z" />
+                                                </svg>
+                                            </div>
+                                        )
+                                    }
                                 </div>
-                                <span className={`ml-3 transition-all 
-                            duration-300 whitespace-nowrap opacity-100
-                            ease-in-out font-bold
-                            `}
-                                    style={{
-                                        opacity: expanded ? 1 : 0,
-                                        width: expanded ? 'auto' : 0,
-                                    }}
-                                >
-                                    {option.name}
-                                </span>
+
+                                {
+                                    option.options && subMenu === option.name && (
+                                        <div className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out">
+                                            {option.options.map((option) => (
+                                                <div
+                                                    key={option.name}
+                                                    onClick={() => navigateTo(option.href)}
+                                                    className={`flex items-center px-3 py-2 text-sm rounded-md cursor-pointer transition-all duration-200
+                                                            ${pathname === option.href
+                                                            ? 'text-slate-700 bg-gray-100'
+                                                            : 'text-white hover:text-slate-700 hover:bg-gray-100'
+                                                        }
+                                                        `}
+                                                >
+                                                    <span className="whitespace-nowrap ">{option.name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )
+                                }
                             </div>
                         ))}
+
                     </div>
 
                     <div className='mt-auto mb-6 flex justify-center cursor-pointer text-white'>

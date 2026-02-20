@@ -61,6 +61,10 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         <path d="M246.9 82.3L271 67.8C292.6 54.8 317.3 48 342.5 48C379.3 48 414.7 62.6 440.7 88.7L504.6 152.6C519.6 167.6 528 188 528 209.2L528 240.1L547.7 259.8L547.7 259.8C563.3 244.2 588.6 244.2 604.3 259.8C620 275.4 619.9 300.7 604.3 316.4L540.3 380.4C524.7 396 499.4 396 483.7 380.4C468 364.8 468.1 339.5 483.7 323.8L464 304L433.1 304C411.9 304 391.5 295.6 376.5 280.6L327.4 231.5C312.4 216.5 304 196.1 304 174.9L304 162.2C304 151 298.1 140.5 288.5 134.8L246.9 109.8C236.5 103.6 236.5 88.6 246.9 82.4zM50.7 466.7L272.8 244.6L363.3 335.1L141.2 557.2C116.2 582.2 75.7 582.2 50.7 557.2C25.7 532.2 25.7 491.7 50.7 466.7z" />
     </svg>
 
+    const ANGLEDOWNICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z" />
+    </svg>
+
     return {
         clientsIcon: CLIENTSICON,
         homeIcon: HOMEICON,
@@ -75,6 +79,7 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         successIcon: SUCCESSICON,
         circleXMarkIcon: CIRCLEXMARK,
         hammerIcon: HAMMERICON,
+        angleDownIcon: ANGLEDOWNICON
     }
 
 }

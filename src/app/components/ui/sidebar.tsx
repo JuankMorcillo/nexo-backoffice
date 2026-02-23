@@ -44,22 +44,26 @@ export default function Sidebar() {
 
     const SIDEBAROPTION = [
         {
+            id: 'dashboard',
             name: 'Dashboard',
             href: '/',
             icon: homeIcon
         },
         {
+            id: 'clients',
             name: 'Clientes',
             href: '/clients',
             icon: clientsIcon,
             options: [
                 {
+                    id: 'branches',
                     name: 'Sucursales',
                     href: '/branches',
                 }
             ]
         },
         {
+            id: 'equipments',
             name: 'Equipos',
             href: '/equipments',
             icon: hammerIcon
@@ -81,14 +85,13 @@ export default function Sidebar() {
 
                     <div className='flex flex-col'>
                         {SIDEBAROPTION.map((option) => (
-                            <div className='w-full'>
+                            <div className='w-full' key={option.id}>
 
 
-                                <div key={option.name} className={`flex items-center border-b px-4 py-3 cursor-pointertransition-all duration-300   
+                                <div key={`${option.id}-item`} className={`flex items-center border-b px-4 py-3 cursor-pointer transition-all duration-300   
                                 ${pathname === option.href ? 'text-slate-700 bg-gray-100' : 'text-white border-gray-200'}                  
                                 hover:text-slate-700 hover:bg-gray-100                   
-                                `}
-                                    onClick={() => navigateTo(option.href)}>
+                                `}>
                                     <div className="shrink-0 transition-all duration-300 ease-in-out"
                                         style={{
                                             transform: expanded ? 'translateX(0)' : 'translateX(1rem)',
@@ -96,7 +99,7 @@ export default function Sidebar() {
                                     >
                                         {option.icon}
                                     </div>
-                                    <span className={`ml-3 transition-all duration-300 whitespace-nowrap opacity-100 ease-in-out font-bold`}
+                                    <span onClick={() => navigateTo(option.href)} className={`ml-3 transition-all duration-300 whitespace-nowrap opacity-100 ease-in-out font-bold`}
                                         style={{
                                             opacity: expanded ? 1 : 0,
                                             width: expanded ? 'auto' : 0,
@@ -124,7 +127,7 @@ export default function Sidebar() {
                                         <div className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out">
                                             {option.options.map((option) => (
                                                 <div
-                                                    key={option.name}
+                                                    key={option.id}
                                                     onClick={() => navigateTo(option.href)}
                                                     className={`flex items-center px-3 py-2 text-sm rounded-md cursor-pointer transition-all duration-200
                                                             ${pathname === option.href
@@ -133,7 +136,7 @@ export default function Sidebar() {
                                                         }
                                                         `}
                                                 >
-                                                    <span className="whitespace-nowrap ">{option.name}</span>
+                                                    <span className="whitespace-nowrap" key={option.href}>{option.name}</span>
                                                 </div>
                                             ))}
                                         </div>

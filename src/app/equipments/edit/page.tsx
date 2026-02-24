@@ -9,7 +9,7 @@ import Iconos from '../../components/ui/hooks/iconos';
 import { Equipment } from '../../types/equipment';
 import { fillToastInfo } from '../../store/slices/toastSlice';
 import { triggerReload } from '../../store/slices/reloadSlice';
-import Inputs from '../../components/inputs';
+import Forms from '../../components/form';
 
 type Props = {
     id: number;
@@ -138,7 +138,7 @@ export default function EditEquipment({ id }: Props) {
 
     return (
         <div className='flex justify-center'>
-            {data && <Inputs inputs={inputs} setInfo={setInfo} styles={styles} submitting={loading} data={data} />}
+            {data && <Forms inputs={inputs} setInfo={setInfo} styles={styles} submitting={loading} data={data} />}
         </div>
     )
 }

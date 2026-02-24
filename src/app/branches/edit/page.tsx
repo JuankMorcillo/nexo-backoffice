@@ -8,7 +8,7 @@ import { clearProcessMessageBranch, editBranchSlice, fetchBranchById, selectBran
 import Iconos from '../../components/ui/hooks/iconos'
 import useClienteInfo from '@/src/hooks/useClienteInfo'
 import { Branch } from '../../types/branches'
-import Inputs from '../../components/inputs'
+import Forms from '../../components/form'
 import { fillToastInfo } from '../../store/slices/toastSlice'
 import { triggerReload } from '../../store/slices/reloadSlice'
 
@@ -131,7 +131,7 @@ export default function EditBranch({ id }: Props) {
     return (
         <div className='flex justify-center'>
             {
-                data && clients && <Inputs inputs={inputs} styles={styles} data={data} setInfo={setInfo} submitting={loading} />
+                data && clients && <Forms inputs={inputs} styles={styles} data={data} setInfo={setInfo} submitting={loading} />
             }
         </div>
     )

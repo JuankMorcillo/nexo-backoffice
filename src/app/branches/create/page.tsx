@@ -9,7 +9,7 @@ import Iconos from '../../components/ui/hooks/iconos';
 import { Branch } from '../../types/branches';
 import { fillToastInfo } from '../../store/slices/toastSlice';
 import { triggerReload } from '../../store/slices/reloadSlice';
-import Inputs from '../../components/inputs';
+import Forms from '../../components/form';
 import useClienteInfo from '@/src/hooks/useClienteInfo';
 
 
@@ -105,7 +105,7 @@ export default function CreateBranch() {
     return (
         <div className='flex justify-center'>
             {
-                clients && <Inputs inputs={inputs} setInfo={setInfo} styles={styles} submitting={loading} />
+                clients && <Forms inputs={inputs} setInfo={setInfo} styles={styles} submitting={loading} />
             }
         </div>
     )

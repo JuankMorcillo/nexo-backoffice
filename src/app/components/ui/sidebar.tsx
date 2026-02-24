@@ -90,7 +90,7 @@ export default function Sidebar() {
 
                     <div className='flex flex-col'>
                         {SIDEBAROPTION.map((option) => (
-                            <div className='w-full' key={option.id}>
+                            <div className='w-full' key={`container-${option.id}`}>
 
 
                                 <div key={`${option.id}-item`} className={`flex items-center border-b px-4 py-3 cursor-pointer transition-all duration-300   
@@ -129,7 +129,7 @@ export default function Sidebar() {
 
                                 {
                                     option.options && subMenu === option.name && (
-                                        <div className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out">
+                                        <div key={`item-suboptions-${option.id}`} className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out">
                                             {option.options.map((option) => (
                                                 <div
                                                     key={option.id}

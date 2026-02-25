@@ -16,7 +16,7 @@ export default function Sidebar() {
 
     const [expandedSubMenu, setExpandedSubMenu] = useState(false)
 
-    const { clientsIcon, homeIcon, hammerIcon, usersIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { clientsIcon, homeIcon, hammerIcon, usersIcon, bussinessCaseIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const { boxOpenIcon } = Iconos({ fill: 'currentColor', classNames: 'size-15', stroke: 'currentColor', strokeWidth: 1.5 })
 
@@ -48,6 +48,12 @@ export default function Sidebar() {
             name: 'Dashboard',
             href: '/',
             icon: homeIcon
+        },
+        {
+            id: 'orders',
+            name: 'Órdenes',
+            href: '/orders',
+            icon: bussinessCaseIcon
         },
         {
             id: 'clients',

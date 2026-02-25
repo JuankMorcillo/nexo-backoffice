@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { toggleSidebar, selectSidebarExpanded } from '../../store/slices/uiSlice'
+import { toggleSidebar, selectSidebarExpanded, toggleMargin } from '../../store/slices/uiSlice'
 
 import Iconos from './hooks/iconos'
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +18,7 @@ export default function Sidebar() {
 
     const { clientsIcon, homeIcon, hammerIcon, usersIcon, bussinessCaseIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
-    const { boxOpenIcon } = Iconos({ fill: 'currentColor', classNames: 'size-15', stroke: 'currentColor', strokeWidth: 1.5 })
+    const { boxOpenIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
     const router = useRouter()
 
@@ -30,6 +30,7 @@ export default function Sidebar() {
 
     const toggleExpand = () => {
         dispatch(toggleSidebar())
+        dispatch(toggleMargin())
     }
 
     const toggleSubmenu = (itemName: string) => {
@@ -84,28 +85,48 @@ export default function Sidebar() {
     return (
         <>
             {session &&
-                <aside className={`fixed flex flex-col bg-linear-to-br from-slate-700 to-slate-800
+                <aside className={`fixed flex flex-col bg-linear-to-br border-r border-gray-200
             transition-all duration-500 ease-in-out will-change-transform lg:translate-x-0
-            shadow-md h-screen
-        ${expanded ? 'w-48' : 'w-23'}
+            shadow-md h-screen bg-white
+        ${expanded ? 'w-64' : 'w-23'}
         `}>
 
-                    <div className='h-14 flex items-center justify-center text-white mb-4 mt-2'>
-                        {boxOpenIcon}
+                    <div className='h-14 flex items-center justify-center mb-4 mt-2'>
+                        <div className='flex items-center justify-center bg-blue-500 text-white rounded-lg p-2'>
+                            {boxOpenIcon}
+                        </div>
+                        <div className='ml-2 transition-all duration-500 ease-in-out'
+                            style={{
+                                opacity: expanded ? 1 : 0,
+                                width: expanded ? '160px' : '0px',
+                                overflow: 'hidden',
+                                display: 'inline-block',
+                            }}
+                        >
+                            <div className='flex flex-col items-center'>
+                                <span className='font-bold text-lg whitespace-nowrap'>
+                                    Nexo Backoffice
+                                </span>
+                                <span className='text-xs text-gray-400 whitespace-nowrap'>
+                                    Gestión de ordenes
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className='flex flex-col'>
+                    <div className='flex flex-col p-4 gap-1'>
                         {SIDEBAROPTION.map((option) => (
                             <div className='w-full' key={`container-${option.id}`}>
 
 
-                                <div key={`${option.id}-item`} className={`flex items-center border-b px-4 py-3 cursor-pointer transition-all duration-300   
-                                ${pathname === option.href ? 'text-slate-700 bg-gray-100' : 'text-white border-gray-200'}                  
-                                hover:text-slate-700 hover:bg-gray-100                   
+                                <div key={`${option.id}-item`} className={`flex items-center px-4 py-3 cursor-pointer transition-all duration-300
+                                rounded-md 
+                                ${pathname === option.href ? 'text-blue-500 bg-blue-200' : 'text-gray-400 font-bold'}                  
+                                hover:bg-gray-100                   
                                 `}>
                                     <div className="shrink-0 transition-all duration-300 ease-in-out"
                                         style={{
-                                            transform: expanded ? 'translateX(0)' : 'translateX(1rem)',
+                                            transform: expanded ? 'translateX(0)' : 'translateX(0.2rem)',
                                         }}
                                     >
                                         {option.icon}
@@ -158,10 +179,10 @@ export default function Sidebar() {
 
                     </div>
 
-                    <div className='mt-auto mb-6 flex justify-center cursor-pointer text-white'>
-                        <button onClick={() => toggleExpand()} className='flex w-full justify-end px-4 py-2 border-b border-white cursor-pointer'>
+                    <div className='mt-auto mb-6 flex justify-center cursor-pointer'>
+                        <button onClick={() => toggleExpand()} className='flex w-full justify-end px-4 py-2 cursor-pointer'>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill='currentColor'
-                                className={`size-6 transition-transform duration-500 ease-in-out
+                                className={`size-7 transition-transform duration-500 ease-in-out
                         ${expanded ? 'rotate-180' : 'rotate-0'}
                         `}
                                 stroke='currentColor' strokeWidth={1.5}>

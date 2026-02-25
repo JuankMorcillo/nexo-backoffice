@@ -30,12 +30,12 @@ export default function Header() {
     const expanded = useSelector(selectSidebarExpanded)
 
     const mainContentMargin = expanded
-        ? "lg:ml-[190px]"
-        : "lg:ml-[90px]";
+        ? "lg:ml-[255px]"
+        : "lg:ml-[92px]";
 
     const headerWidth = expanded
-        ? "lg:w-[calc(100%-190px)]"
-        : "lg:w-[calc(100%-90px)]";
+        ? "lg:w-[calc(100%-255px)]"
+        : "lg:w-[calc(100%-74px)]";
 
 
     const handleLogout = () => {
@@ -44,13 +44,13 @@ export default function Header() {
 
     return (
         <>
-            {session && <div className={`h-14 border-gray-200 shadow-md w-full flex items-center 
+            {session && <div className={`h-14 border-b border-gray-200 shadow-md w-full flex items-center 
             transition-all duration-500 ease-in-out
-        justify-between px-6 py-4 bg-linear-to-br from-slate-700 to-slate-800
+        justify-between px-6 py-4 bg-linear-to-br bg-white
         ${mainContentMargin} ${headerWidth}`}>
 
-                <div className='ml-4 text-white font-bold text-lg'>
-                    Nexo Backoffice
+                <div className='ml-4 text-black font-bold text-lg'>
+                    Bienvenido de nuevo, {session?.user.user.name}!
                 </div>
 
                 <div className='flex items-center mr-4'>

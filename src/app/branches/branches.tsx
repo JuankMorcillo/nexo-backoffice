@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 import { useSession } from 'next-auth/react';
 import Iconos from '../components/ui/hooks/iconos';
-import { Params } from '../types/params';
 import { fetchBranches } from '../store/slices/branchesSlice';
 import { Actions, TopActions } from '../types/table';
 import MyTable from '../components/table';

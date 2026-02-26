@@ -12,7 +12,6 @@ import { darken, lighten, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useSession } from "next-auth/react";
-import { Params } from "../types/params";
 import { tableConstants } from "@/src/hooks/table_constants";
 import { useSelector } from "react-redux";
 import { selectReload, triggerReload } from "../store/slices/reloadSlice";

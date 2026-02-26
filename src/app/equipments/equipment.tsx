@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import Iconos from '../components/ui/hooks/iconos';
-import { Params } from '../types/params';
 import { fetchEquipments } from '../store/slices/EquipmentSlice';
 import { Actions, TopActions } from '../types/table';
 import Modal from '../components/modal';

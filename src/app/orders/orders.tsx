@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Params } from '../types/params';
 import { fetchOrders } from '../store/slices/ordersSlice';
 import { Actions, TopActions } from '../types/table';
 import Iconos from '../components/ui/hooks/iconos';

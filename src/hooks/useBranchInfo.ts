@@ -2,7 +2,6 @@ import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import { AppDispatch } from '../app/store'
 import { useDispatch } from 'react-redux'
-import { Params } from '../app/types/params'
 import { fetchBranches } from '../app/store/slices/branchesSlice'
 
 type Props = { client_id: number }

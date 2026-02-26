@@ -1,4 +1,3 @@
-import { Params } from "./params";
 
 export type Column<T> = {
     accessorKey: string;

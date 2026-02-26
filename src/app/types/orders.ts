@@ -10,3 +10,9 @@ export interface Task {
     equipments_id: number;
     users_id: number;
 }
+
+export interface OrderType {
+    id: number;
+    name: string;
+    description?: string;
+}

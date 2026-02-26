@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { AppDispatch } from '../app/store'
 import { useDispatch } from 'react-redux'
 import { fetchBranches } from '../app/store/slices/branchesSlice'
+import { Client } from '../app/types/clients'
 
 type Props = { client_id: number }
 
@@ -20,6 +21,7 @@ export default function useBranchInfo({ client_id }: Props) {
             search: '',
             order: 'DESC',
             orderBy: undefined,
+            clientId: client_id,
         }
 
         if (session?.user.access_token) {
@@ -41,8 +43,8 @@ export default function useBranchInfo({ client_id }: Props) {
     }
 
     useEffect(() => {
-        handleGetBranches()
-    }, [session])
+        if (client_id) handleGetBranches()
+    }, [session, client_id])
 
     return { branches, setBranches }
 

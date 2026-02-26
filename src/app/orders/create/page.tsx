@@ -13,6 +13,8 @@ import TaskBuilder from '../../components/taskBuilder';
 import { Order } from '../../types/orders';
 import { fillToastInfo } from '../../store/slices/toastSlice';
 import Iconos from '../../components/ui/hooks/iconos';
+import useOrderTypes from '@/src/hooks/useOrderTypes';
+import useEquipmentInfo from '@/src/hooks/useEquipmentInfo';
 
 export default function CreateOrder() {
     const dispatch = useDispatch<AppDispatch>()
@@ -24,9 +26,12 @@ export default function CreateOrder() {
 
     const [didLoad, setDidLoad] = useState(false)
     const [client_id, setClient_id] = useState(0)
+    const [branch_id, setBranch_Id] = useState(0)
 
     const { clients } = useClienteInfo()
     const { branches } = useBranchInfo({ client_id })
+    const { equipments } = useEquipmentInfo({ branch_id })
+    const { orderTypes } = useOrderTypes()
 
     const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
@@ -57,6 +62,7 @@ export default function CreateOrder() {
             type: 'select',
             list: true,
             options: branches,
+            set: setBranch_Id,
             required: false,
         },
         {
@@ -64,11 +70,7 @@ export default function CreateOrder() {
             label: 'Tipo de Orden',
             type: 'select',
             list: true,
-            options: [
-                { value: 1, label: 'Instalación' },
-                { value: 2, label: 'Mantenimiento' },
-                { value: 3, label: 'Reparación' },
-            ],
+            options: orderTypes,
             required: false,
         }
     ]
@@ -98,9 +100,9 @@ export default function CreateOrder() {
 
     useEffect(() => {
 
-        if (clients && branches) setDidLoad(true)
+        if (clients && orderTypes) setDidLoad(true)
 
-    }, [clients, branches])
+    }, [clients, orderTypes])
 
 
     return (
@@ -108,7 +110,7 @@ export default function CreateOrder() {
 
             {
                 didLoad &&
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full flex p-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full flex p-6 bg-white rounded-lg shadow-md">
                     <div className="w-full mx-auto flex flex-col gap-4">
                         <h1 className="text-2xl font-bold mb-6">Crear Orden</h1>
 
@@ -123,7 +125,7 @@ export default function CreateOrder() {
                             {/* Task Builder */}
                             <TaskBuilder
                                 form={form}
-                                equipments={[{ value: 1, label: 'Equipo 1' }]}
+                                equipments={equipments}
                                 technicians={[{ value: 1, label: 'Técnico 1' }]}
                             />
                         </div>

@@ -6,6 +6,7 @@ import toastReducer from './slices/toastSlice';
 import equipmentReducer from './slices/EquipmentSlice';
 import branchesReducer from './slices/branchesSlice';
 import orderReducer from './slices/ordersSlice';
+import orderTypesReducer from './slices/orderTypesSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         equipments: equipmentReducer,
         branches: branchesReducer,
         orders: orderReducer,
+        orderTypes: orderTypesReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

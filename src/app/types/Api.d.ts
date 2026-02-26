@@ -1,5 +1,3 @@
-import { Params } from "./params"
-
 declare global {
     type OptionsProps = {
         endpoint: string,

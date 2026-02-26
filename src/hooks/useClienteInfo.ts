@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 import { fetchClients } from '../app/store/slices/clientsSlice';
-import { Params } from '../app/types/params';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
 

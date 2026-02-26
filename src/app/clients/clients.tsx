@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react'
 import { useDispatch } from 'react-redux'
 import { fetchClients } from '../store/slices/clientsSlice'
-import { Params } from '../types/params'
 import { AppDispatch } from '../store'
 import MyTable from '../components/table'
 import { columns } from './ConstVariables'

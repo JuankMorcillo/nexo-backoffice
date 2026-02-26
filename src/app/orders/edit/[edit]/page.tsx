@@ -14,6 +14,8 @@ import { Order } from '../../../types/orders';
 import { fillToastInfo } from '../../../store/slices/toastSlice';
 import Iconos from '../../../components/ui/hooks/iconos';
 import { useParams } from 'next/navigation';
+import useEquipmentInfo from '@/src/hooks/useEquipmentInfo';
+import useOrderTypes from '@/src/hooks/useOrderTypes';
 
 export default function EditOrder() {
 
@@ -27,10 +29,13 @@ export default function EditOrder() {
 
     const [didLoad, setDidLoad] = useState(false)
     const [client_id, setClient_id] = useState(0)
+    const [branch_id, setBranch_Id] = useState(0)
     const [data, setData] = useState()
 
     const { clients } = useClienteInfo()
     const { branches } = useBranchInfo({ client_id })
+    const { equipments } = useEquipmentInfo({ branch_id })
+    const { orderTypes } = useOrderTypes()
 
     const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
@@ -47,7 +52,7 @@ export default function EditOrder() {
 
     const orderInputs: Inputs = [
         {
-            id: 'clients_id',
+            id: 'branch.clients_id',
             label: 'Cliente',
             type: 'select',
             list: true,
@@ -68,11 +73,7 @@ export default function EditOrder() {
             label: 'Tipo de Orden',
             type: 'select',
             list: true,
-            options: [
-                { value: 1, label: 'Instalación' },
-                { value: 2, label: 'Mantenimiento' },
-                { value: 3, label: 'Reparación' },
-            ],
+            options: orderTypes,
             required: false,
         }
     ]
@@ -87,6 +88,9 @@ export default function EditOrder() {
                 )
                 if (response.type === 'orders/fetchOrderById/fulfilled') {
                     setData(response.payload)
+                    setClient_id(response.payload.branch.clients_id)
+                    setBranch_Id(response.payload.branches_id)
+
                     form.reset(response.payload)
                 }
             } catch (error) {
@@ -124,9 +128,9 @@ export default function EditOrder() {
 
     useEffect(() => {
 
-        if (clients && branches && data) setDidLoad(true)
+        if (clients && branches && equipments && orderTypes && data) setDidLoad(true)
 
-    }, [clients, branches, data])
+    }, [clients, branches, equipments, orderTypes, data])
 
 
     return (
@@ -134,7 +138,7 @@ export default function EditOrder() {
 
             {
                 didLoad &&
-                <form onSubmit={handleSubmit(onSubmit)} className="w-full flex p-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full flex p-6 bg-white rounded-lg shadow-md">
                     <div className="w-full mx-auto flex flex-col gap-4">
                         <h1 className="text-2xl font-bold mb-6">Editar Orden</h1>
 

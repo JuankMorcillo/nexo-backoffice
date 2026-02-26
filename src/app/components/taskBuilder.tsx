@@ -33,8 +33,8 @@ export default function TaskBuilder({
   return (
     <div className="border border-gray-300 rounded-lg p-6 mt-6 w-full ">
       <div className="flex justify-between items-center mb-6 gap-2">
-        <h2 className="text-lg font-bold">Task Builder</h2>
-        <span className="text-sm text-gray-500">{fields.length} Tasks Added</span>
+        <h2 className="text-lg font-bold">Tareas</h2>
+        <span className="text-sm text-gray-500">{fields.length} Tarea Agregada</span>
       </div>
 
       <div className="space-y-4">

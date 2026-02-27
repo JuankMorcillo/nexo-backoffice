@@ -1,9 +1,9 @@
 import {
+  createUser,
   getUsers,
 } from "@/src/lib/api/users";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { User } from "../../types/users";
-import { FetchApi } from "@/src/lib/api/fetchApi";
 import { fetchClientById } from "./clientsSlice";
 
 const initialState = {
@@ -33,57 +33,6 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
     }
   }
 )
-
-
-export async function getUserById(token: string, id: number) {
-
-    const options: OptionsProps = {
-        endpoint: `users/${id}`,
-        method: 'GET' as const,
-        headers: {
-            Authorization: 'bearer ' + token,
-        }
-    }
-
-    try {
-        return await FetchApi(options);
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-
-}
-
-export async function createUser(token: string, data: User) {
-
-    const formData = new FormData();
-    for (const key in data) {
-        if (data[key as keyof User] !== undefined) {
-            if (Array.isArray(data[key as keyof User])) { 
-                formData.append(key, JSON.stringify(data[key as keyof User]));
-            } else {
-                formData.append(key, String(data[key as keyof User]));
-            }
-        }
-    }
-
-    const options: OptionsProps = {
-        endpoint: 'users',
-        method: 'POST' as const,
-        headers: {
-            Authorization: 'bearer ' + token,
-        },
-        body: formData
-    }
-    
-    try {
-        return await FetchApi(options);
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-
-}
 
 
 export const createUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(

@@ -1,10 +1,11 @@
 import {
   createUser,
+  editUser,
+  getUserById,
   getUsers,
 } from "@/src/lib/api/users";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { User } from "../../types/users";
-import { fetchClientById } from "./clientsSlice";
 
 const initialState = {
   users: [],
@@ -35,6 +36,18 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
 )
 
 
+export const fetchUserById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'users/fetchUserById',
+    async ({ token, id }, { rejectWithValue }) => {
+        try {
+            const response = await getUserById(token, id);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+)
+
 export const createUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(
   'users/createUser',
   async ({ token, user }, { rejectWithValue }) => {
@@ -51,6 +64,20 @@ export const createUserSlice = createAsyncThunk<any, { token: string; user: User
   }
 )
 
+export const editUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(
+  'users/editUser',
+  async ({ token, user }, { rejectWithValue }) => {
+    try {
+
+      const response = await editUser(token || '', user);
+
+      return response;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error || 'Error desconocido';
+      return rejectWithValue(errorMessage);
+    }
+  }
+)
 
 const usersSlice = createSlice({
   name: 'users',
@@ -85,23 +112,23 @@ const usersSlice = createSlice({
         state.loading = false;
         state.message = action.payload || 'Error al consultar los usuarios';
       });
-      
-    // Fetch Client By ID
+
+    // Fetch Users By ID
     builder
-      .addCase(fetchClientById.pending, (state) => {
+      .addCase(fetchUserById.pending, (state) => {
         state.loading = true;
         state.message = '';
       })
-      .addCase(fetchClientById.fulfilled, (state, action) => {
+      .addCase(fetchUserById.fulfilled, (state, action) => {
         state.loading = false;
         state.message = 'Usuario consultado exitosamente';
       })
-      .addCase(fetchClientById.rejected, (state, action) => {
+      .addCase(fetchUserById.rejected, (state, action) => {
         state.loading = false;
         state.message = action.payload || 'Error al consultar el usuario';
       })
 
-    // Create Client
+    // Create Users
     builder
       .addCase(createUserSlice.pending, (state) => {
         state.loading = true;
@@ -115,6 +142,23 @@ const usersSlice = createSlice({
       .addCase(createUserSlice.rejected, (state, action) => {
         state.loading = false;
         state.processMessage = action.payload || 'Error al crear el usuario';
+        state.success = false;
+      })
+      
+    // Edit Users
+    builder
+      .addCase(editUserSlice.pending, (state) => {
+        state.loading = true;
+        state.processMessage = '';
+      })
+      .addCase(editUserSlice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload.message || 'Usuario editado exitosamente';
+        state.success = true;
+      })
+      .addCase(editUserSlice.rejected, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload || 'Error al editar el usuario';
         state.success = false;
       })
 

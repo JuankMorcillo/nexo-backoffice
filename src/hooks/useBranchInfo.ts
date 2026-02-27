@@ -1,18 +1,19 @@
-'use client';
-
-import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
-import { fetchClients } from '../app/store/slices/clientsSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../app/store';
+import { AppDispatch } from '../app/store'
+import { useDispatch } from 'react-redux'
+import { fetchBranches } from '../app/store/slices/branchesSlice'
+import { Client } from '../app/types/clients'
 
-export default function useClienteInfo() {
+type Props = { client_id: number }
 
-    const [clients, setClients] = useState<any[]>()
+export default function useBranchInfo({ client_id }: Props) {
+
+    const [branches, setBranches] = useState<any[]>()
     const { data: session } = useSession()
     const dispatch = useDispatch<AppDispatch>()
 
-    const handleGetClients = async () => {
+    const handleGetBranches = async () => {
 
         const params: Params = {
             page: 1,
@@ -20,11 +21,12 @@ export default function useClienteInfo() {
             search: '',
             order: 'DESC',
             orderBy: undefined,
+            clientId: client_id,
         }
 
         if (session?.user.access_token) {
             const result = await dispatch(
-                fetchClients({ token: session.user.access_token, params: params })
+                fetchBranches({ token: session.user.access_token, params: params })
             );
 
             const auxData = []
@@ -35,16 +37,15 @@ export default function useClienteInfo() {
                 }
             }
 
-            setClients(auxData)
+            setBranches(auxData)
 
         }
     }
 
     useEffect(() => {
-        handleGetClients()
-    }, [session])
+        if (client_id) handleGetBranches()
+    }, [session, client_id])
 
-
-    return { clients, setClients }
+    return { branches, setBranches }
 
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react'
-import Inputs from '../../components/inputs';
+import Forms from '../../components/form';
 import { AppDispatch } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
@@ -140,7 +140,7 @@ export default function EditClient({ id }: Props) {
 
     return (
         <div className='flex justify-center'>
-            <Inputs inputs={inputs} styles={styles} data={data} setInfo={setInfo} submitting={loading} />
+            <Forms inputs={inputs} styles={styles} data={data} setInfo={setInfo} submitting={loading} />
         </div>
     )
 }

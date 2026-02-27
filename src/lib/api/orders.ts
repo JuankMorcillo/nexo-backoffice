@@ -1,10 +1,10 @@
-import { FetchApi } from "./fetchApi"
-import { User } from "@/src/app/types/users";
+import { Order } from "@/src/app/types/orders"
+import { FetchApi } from "./fetchApi";
 
-export async function getUsers(token: string, params = {}) {
+export async function getOrders(token: string, params = {}) {
 
     const options: OptionsProps = {
-        endpoint: 'users',
+        endpoint: 'orders',
         method: 'GET' as const,
         headers: {
             Authorization: 'bearer ' + token,
@@ -20,11 +20,10 @@ export async function getUsers(token: string, params = {}) {
     }
 }
 
-
-export async function getUserById(token: string, id: number) {
+export async function getOrderById(token: string, id: number) {
 
     const options: OptionsProps = {
-        endpoint: `users/${id}`,
+        endpoint: `orders/${id}`,
         method: 'GET' as const,
         headers: {
             Authorization: 'bearer ' + token,
@@ -40,11 +39,31 @@ export async function getUserById(token: string, id: number) {
 
 }
 
-export async function createUser(token: string, data: User) {
+export async function createOrder(token: string, data: Order) {
 
     const options: OptionsProps = {
-        endpoint: 'users',
+        endpoint: 'orders',
         method: 'POST' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: data
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
+export async function editOrder(token: string, data: Order) {
+
+    const options: OptionsProps = {
+        endpoint: `orders/${data.id}`,
+        method: 'PATCH' as const,
         headers: {
             Authorization: 'bearer ' + token,
         },

@@ -5,7 +5,8 @@ export interface User {
   lastname: string;
   email: string;
   avatar_url?: null;
-  status: number;
+  password?: string;
+  status?: number;
   identification_types_id: number;
   roles_ids: number[];
   subscribers_id?: number;

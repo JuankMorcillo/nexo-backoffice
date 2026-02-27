@@ -2,7 +2,7 @@ import { Column } from "../types/table";
 
 export const columns: Column<any>[] = [
     {
-        accessorKey: 'identification',
+        accessorKey: 'identifier',
         header: 'Identificación',
         size: 200,
     },

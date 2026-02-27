@@ -121,7 +121,7 @@ export default function CreateUser() {
           duration: 3000,
         }),
       );
-      clearProcessMessage();
+      dispatch(clearProcessMessage());
     }
 
     if (success) dispatch(triggerReload());

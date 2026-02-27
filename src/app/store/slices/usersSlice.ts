@@ -2,6 +2,9 @@ import {
   getUsers,
 } from "@/src/lib/api/users";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { User } from "../../types/users";
+import { FetchApi } from "@/src/lib/api/fetchApi";
+import { fetchClientById } from "./clientsSlice";
 
 const initialState = {
   users: [],
@@ -27,6 +30,74 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+)
+
+
+export async function getUserById(token: string, id: number) {
+
+    const options: OptionsProps = {
+        endpoint: `users/${id}`,
+        method: 'GET' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        }
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
+export async function createUser(token: string, data: User) {
+
+    const formData = new FormData();
+    for (const key in data) {
+        if (data[key as keyof User] !== undefined) {
+            if (Array.isArray(data[key as keyof User])) { 
+                formData.append(key, JSON.stringify(data[key as keyof User]));
+            } else {
+                formData.append(key, String(data[key as keyof User]));
+            }
+        }
+    }
+
+    const options: OptionsProps = {
+        endpoint: 'users',
+        method: 'POST' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: formData
+    }
+    
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
+
+export const createUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(
+  'users/createUser',
+  async ({ token, user }, { rejectWithValue }) => {
+    try {
+
+      const response = await createUser(token || '', user);
+
+      return response;
+
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error || 'Error desconocido';
+      return rejectWithValue(errorMessage);
     }
   }
 )
@@ -65,13 +136,46 @@ const usersSlice = createSlice({
         state.loading = false;
         state.message = action.payload || 'Error al consultar los usuarios';
       });
+      
+    // Fetch Client By ID
+    builder
+      .addCase(fetchClientById.pending, (state) => {
+        state.loading = true;
+        state.message = '';
+      })
+      .addCase(fetchClientById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = 'Usuario consultado exitosamente';
+      })
+      .addCase(fetchClientById.rejected, (state, action) => {
+        state.loading = false;
+        state.message = action.payload || 'Error al consultar el usuario';
+      })
+
+    // Create Client
+    builder
+      .addCase(createUserSlice.pending, (state) => {
+        state.loading = true;
+        state.processMessage = '';
+      })
+      .addCase(createUserSlice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload.message || 'Usuario creado exitosamente';
+        state.success = true;
+      })
+      .addCase(createUserSlice.rejected, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload || 'Error al crear el usuario';
+        state.success = false;
+      })
+
   },
 })
 
 export const { setParams, clearMessage, clearProcessMessage, setSuccess } = usersSlice.actions;
 
 // Selectors
-export const selectUsers = (state: any) => state.clients.users;
+export const selectUsers = (state: any) => state.users.users;
 export const selectTotalUsers = (state: any) => state.users.total;
 export const selectUsersParams = (state: any) => state.users.params;
 export const selectUsersLoading = (state: any) => state.users.loading;

@@ -71,3 +71,32 @@ export async function createUser(token: string, data: User) {
     }
 
 }
+
+export async function editUser(token: string, data: User) {
+    const formData = new FormData();
+    for (const key in data) {
+        if (data[key as keyof User] !== undefined) {
+            if (Array.isArray(data[key as keyof User])) { 
+                formData.append(key, JSON.stringify(data[key as keyof User]));
+            } else {
+                formData.append(key, String(data[key as keyof User]));
+            }
+        }
+    }
+    const options: OptionsProps = {
+        endpoint: `users/${data.id}`,
+        method: 'PATCH' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: formData
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}

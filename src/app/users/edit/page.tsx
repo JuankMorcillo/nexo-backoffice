@@ -1,24 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Forms from "../../components/form";
 import { AppDispatch } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { triggerReload } from "../../store/slices/reloadSlice";
-import Iconos from "../../components/ui/hooks/iconos";
 import { fillToastInfo } from "../../store/slices/toastSlice";
+import Iconos from "../../components/ui/hooks/iconos";
 import {
-  clearProcessMessage,
-  createUserSlice,
   selectUsersLoading,
+  clearProcessMessage,
+  editUserSlice,
+  fetchUserById,
   selectUsersProcessMessage,
   selectUsersSuccess,
   setSuccess,
 } from "../../store/slices/usersSlice";
 import { User } from "../../types/users";
-import Forms from "../../components/form";
 
-export default function CreateUser() {
+type Props = {
+  id: number;
+};
+
+export default function EditUser({ id }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const { data: session } = useSession();
 
@@ -47,8 +52,9 @@ export default function CreateUser() {
     subscribers_id: session?.user.user.subscribers_id,
     identification_types_id: 1,
     roles_ids: [1],
-    password: "*12345",
   });
+
+  const [data, setData] = useState();
 
   const inputs: Inputs = [
     {
@@ -83,19 +89,31 @@ export default function CreateUser() {
 
   const styles = {
     cols: 1,
-    textButton: "Guardar Usuario",
+    textButton: "Actualizar Usuario",
   };
 
-  const handleCreateUser = async () => {
+  const fetchUser = async () => {
+    if (session?.user.access_token) {
+      try {
+        const response = await dispatch(
+          fetchUserById({ token: session.user.access_token, id }),
+        );
+        if (response.type === "users/fetchUserById/fulfilled") {
+          setData(response.payload);
+        }
+      } catch (error) {
+        console.error("Error fetching User:", error);
+      }
+    }
+  };
+
+  const handleEditUser = async () => {
     if (session?.user.access_token) {
       const result = await dispatch(
-        createUserSlice({
-          token: session.user.access_token,
-          user: { ...info },
-        }),
+        editUserSlice({ token: session.user.access_token, user: { ...info } }),
       );
 
-      if (result.type == "users/createUser/fulfilled") {
+      if (result.type == "users/editUser/fulfilled") {
         setInfo({
           identifier: 0,
           name: "",
@@ -129,8 +147,12 @@ export default function CreateUser() {
   }, [message, success]);
 
   useEffect(() => {
+    fetchUser();
+  }, [id]);
+
+  useEffect(() => {
     if (info.identifier && info.name && info.lastname && info.email) {
-      handleCreateUser();
+      handleEditUser();
     }
   }, [info]);
 
@@ -139,7 +161,7 @@ export default function CreateUser() {
       <Forms
         inputs={inputs}
         styles={styles}
-        data={info}
+        data={data}
         setInfo={setInfo}
         submitting={loading}
       />

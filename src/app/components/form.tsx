@@ -202,7 +202,6 @@ export default function Forms({ styles, data, setInfo, inputs, submitting }: Inp
                                     padding: "10px 30px",
                                     borderRadius: "10px",
                                     background: "none",
-                                    display: styles.buttonDisplay ? 'flex' : 'none',
                                 }
                             }
                             type="submit" disabled={submitting}>

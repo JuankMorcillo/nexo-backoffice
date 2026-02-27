@@ -1,7 +1,11 @@
 import {
+  createUser,
+  editUser,
+  getUserById,
   getUsers,
 } from "@/src/lib/api/users";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { User } from "../../types/users";
 
 const initialState = {
   users: [],
@@ -31,6 +35,49 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
   }
 )
 
+
+export const fetchUserById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'users/fetchUserById',
+    async ({ token, id }, { rejectWithValue }) => {
+        try {
+            const response = await getUserById(token, id);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+)
+
+export const createUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(
+  'users/createUser',
+  async ({ token, user }, { rejectWithValue }) => {
+    try {
+
+      const response = await createUser(token || '', user);
+
+      return response;
+
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error || 'Error desconocido';
+      return rejectWithValue(errorMessage);
+    }
+  }
+)
+
+export const editUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(
+  'users/editUser',
+  async ({ token, user }, { rejectWithValue }) => {
+    try {
+
+      const response = await editUser(token || '', user);
+
+      return response;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error || 'Error desconocido';
+      return rejectWithValue(errorMessage);
+    }
+  }
+)
 
 const usersSlice = createSlice({
   name: 'users',
@@ -65,13 +112,63 @@ const usersSlice = createSlice({
         state.loading = false;
         state.message = action.payload || 'Error al consultar los usuarios';
       });
+
+    // Fetch Users By ID
+    builder
+      .addCase(fetchUserById.pending, (state) => {
+        state.loading = true;
+        state.message = '';
+      })
+      .addCase(fetchUserById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = 'Usuario consultado exitosamente';
+      })
+      .addCase(fetchUserById.rejected, (state, action) => {
+        state.loading = false;
+        state.message = action.payload || 'Error al consultar el usuario';
+      })
+
+    // Create Users
+    builder
+      .addCase(createUserSlice.pending, (state) => {
+        state.loading = true;
+        state.processMessage = '';
+      })
+      .addCase(createUserSlice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload.message || 'Usuario creado exitosamente';
+        state.success = true;
+      })
+      .addCase(createUserSlice.rejected, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload || 'Error al crear el usuario';
+        state.success = false;
+      })
+      
+    // Edit Users
+    builder
+      .addCase(editUserSlice.pending, (state) => {
+        state.loading = true;
+        state.processMessage = '';
+      })
+      .addCase(editUserSlice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload.message || 'Usuario editado exitosamente';
+        state.success = true;
+      })
+      .addCase(editUserSlice.rejected, (state, action) => {
+        state.loading = false;
+        state.processMessage = action.payload || 'Error al editar el usuario';
+        state.success = false;
+      })
+
   },
 })
 
 export const { setParams, clearMessage, clearProcessMessage, setSuccess } = usersSlice.actions;
 
 // Selectors
-export const selectUsers = (state: any) => state.clients.users;
+export const selectUsers = (state: any) => state.users.users;
 export const selectTotalUsers = (state: any) => state.users.total;
 export const selectUsersParams = (state: any) => state.users.params;
 export const selectUsersLoading = (state: any) => state.users.loading;

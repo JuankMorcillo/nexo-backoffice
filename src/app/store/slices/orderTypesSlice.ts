@@ -1,5 +1,6 @@
-import { getOrderTypes } from "@/src/lib/api/order_types";
+import { createOrderType, getOrderTypes } from "@/src/lib/api/order_types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { OrderType } from "../../types/orders";
 
 const initialState = {
     orderTypes: [],
@@ -25,6 +26,22 @@ export const fetchOrderTypes = createAsyncThunk<any, FetchPayload, { rejectValue
             const response = await getOrderTypes(token, params);
 
             return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const createOrderTypeSlice = createAsyncThunk<any, { order_type: OrderType, token: string }, { rejectValue: string }>(
+    'order-types/createOrderType',
+    async (orderType, { rejectWithValue }) => {
+
+        try {
+            const result = await createOrderType(orderType.token || '', orderType.order_type);
+
+            return result;
         } catch (error: any) {
             const errorMessage = error || 'Error desconocido';
             return rejectWithValue(errorMessage);
@@ -70,14 +87,32 @@ const orderTypesSlice = createSlice({
                 state.success = false;
             })
 
+        // create order type
+        builder
+            .addCase(createOrderTypeSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+            })
+            .addCase(createOrderTypeSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = 'Tipo de orden creado exitosamente';
+                state.success = true;
+            })
+            .addCase(createOrderTypeSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al crear el tipo de orden';
+                state.success = false;
+            })
+
     }
 })
+
+export const { setOrderTypesParams, clearMessageOrderTypes, clearProcessMessageOrderTypes, setSuccessOrderTypes } = orderTypesSlice.actions
 
 export const selectOrderTypesLoading = (state: any) => state.order_types.loading;
 export const selectOrderTypesSuccess = (state: any) => state.order_types.success;
 export const selectOrderTypesMessage = (state: any) => state.order_types.message;
 export const selectOrderTypesProcessMessage = (state: any) => state.order_types.processMessage;
 
-export const { setOrderTypesParams, clearMessageOrderTypes, clearProcessMessageOrderTypes, setSuccessOrderTypes } = orderTypesSlice.actions
 
 export default orderTypesSlice.reducer

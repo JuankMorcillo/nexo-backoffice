@@ -126,35 +126,36 @@ export default function Sidebar() {
                             <div className='w-full' key={`container-${option.id}`}>
 
 
-                                <div key={`${option.id}-item`} className={`flex items-center px-4 py-3 cursor-pointer transition-all duration-300
-                                rounded-md 
-                                ${pathname === option.href ? 'text-blue-500 bg-blue-200' : 'text-gray-400 font-bold'}                  
-                                hover:bg-gray-100                   
-                                `}>
-                                    <div className="shrink-0 transition-all duration-300 ease-in-out"
-                                        style={{
-                                            transform: expanded ? 'translateX(0)' : 'translateX(0.2rem)',
-                                        }}
-                                    >
-                                        {option.icon}
+                                <div key={`${option.id}-item`}
+                                    className={`flex items-start gap-3 px-4 py-3 cursor-pointer transition-all duration-300 rounded-md ${pathname === option.href ? 'text-blue-500 bg-blue-200' : 'text-gray-400 font-bold'} hover:bg-gray-100`}>
+
+                                    <div onClick={() => navigateTo(option.href)}
+                                        className={`flex items-center gap-3 w-full`}>
+                                        <div className={`transition-all duration-300 ease-in-out`}
+                                            style={{
+                                                transform: expanded ? 'translateX(0)' : 'translateX(0.1rem)',
+                                            }}
+                                        >
+                                            {option.icon}
+                                        </div>
+                                        <span className={`flex transition-all duration-300 whitespace-nowrap opacity-100 ease-in-out font-bold mt-0.5`}
+                                            style={{
+                                                opacity: expanded ? 1 : 0,
+                                                width: expanded ? 'auto' : 0,
+                                            }}
+                                        >
+                                            {option.name}
+                                        </span>
                                     </div>
-                                    <span onClick={() => navigateTo(option.href)} className={`ml-3 transition-all duration-300 whitespace-nowrap opacity-100 ease-in-out font-bold`}
-                                        style={{
-                                            opacity: expanded ? 1 : 0,
-                                            width: expanded ? 'auto' : 0,
-                                        }}
-                                    >
-                                        {option.name}
-                                    </span>
 
                                     {
                                         //Pestaña para submenu
                                         option.options && expanded && (
-                                            <div className='shrink-0'
+                                            <div className='shrink-0 mt-0.5'
                                                 onClick={() => toggleSubmenu(option.name)}
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill='currentColor'
-                                                    className={`size-6 transition-transform duration-500 ease-in-out ${subMenu === option.name ? 'rotate-180' : 'rotate-0'}`}>
+                                                    className={`size-6 transition-transform duration-500 ease-in-out ${subMenu === option.name ? 'rotate-360' : 'rotate-270'}`}>
                                                     <path d="M297.4 438.6C309.9 451.1 330.2 451.1 342.7 438.6L502.7 278.6C515.2 266.1 515.2 245.8 502.7 233.3C490.2 220.8 469.9 220.8 457.4 233.3L320 370.7L182.6 233.4C170.1 220.9 149.8 220.9 137.3 233.4C124.8 245.9 124.8 266.2 137.3 278.7L297.3 438.7z" />
                                                 </svg>
                                             </div>
@@ -164,16 +165,16 @@ export default function Sidebar() {
 
                                 {
                                     //Submenu
-                                    option.options && subMenu === option.name && (
-                                        <div key={`item-suboptions-${option.id}`} className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out">
+                                    option.options && subMenu === option.name && expanded && (
+                                        <div key={`item-suboptions-${option.id}`} className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out border-gray-200 border-l">
                                             {option.options.map((option) => (
                                                 <div
                                                     key={option.id}
                                                     onClick={() => navigateTo(option.href)}
-                                                    className={`flex items-center px-3 py-2 text-sm rounded-md cursor-pointer transition-all duration-200
+                                                    className={`flex items-center px-3 py-2 text-sm cursor-pointer transition-all duration-200 ml-4
                                                             ${pathname === option.href
-                                                            ? 'text-slate-700 bg-gray-100'
-                                                            : 'text-white hover:text-slate-700 hover:bg-gray-100'
+                                                            ? 'text-blue-500 bg-blue-100 rounded-md font-semibold'
+                                                            : 'text-gray-400 hover:bg-gray-100 hover:rounded-md font-semibold'
                                                         }
                                                         `}
                                                 >

@@ -18,7 +18,7 @@ export const store = configureStore({
         equipments: equipmentReducer,
         branches: branchesReducer,
         orders: orderReducer,
-        orderTypes: orderTypesReducer,
+        order_types: orderTypesReducer,
         users: usersReducer,
     },
     middleware: (getDefaultMiddleware) =>

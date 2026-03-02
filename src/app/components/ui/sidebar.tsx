@@ -54,7 +54,14 @@ export default function Sidebar() {
             id: 'orders',
             name: 'Órdenes',
             href: '/orders',
-            icon: bussinessCaseIcon
+            icon: bussinessCaseIcon,
+            options: [
+                {
+                    id: 'order_types',
+                    name: 'Tipos de orden',
+                    href: '/orders/order_types',
+                }
+            ]
         },
         {
             id: 'clients',
@@ -141,6 +148,7 @@ export default function Sidebar() {
                                     </span>
 
                                     {
+                                        //Pestaña para submenu
                                         option.options && expanded && (
                                             <div className='shrink-0'
                                                 onClick={() => toggleSubmenu(option.name)}
@@ -155,6 +163,7 @@ export default function Sidebar() {
                                 </div>
 
                                 {
+                                    //Submenu
                                     option.options && subMenu === option.name && (
                                         <div key={`item-suboptions-${option.id}`} className="ml-6 mt-1 space-y-1 transition-all duration-300 ease-in-out">
                                             {option.options.map((option) => (

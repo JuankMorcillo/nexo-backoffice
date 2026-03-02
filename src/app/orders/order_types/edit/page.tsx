@@ -4,7 +4,7 @@ import Forms from '@/src/app/components/form'
 import Iconos from '@/src/app/components/ui/hooks/iconos'
 import { AppDispatch } from '@/src/app/store'
 import { clearProcessMessageBranch, setSuccessBranch } from '@/src/app/store/slices/branchesSlice'
-import { editOrderTypeSlice, fetchOrderTypeById, selectOrderTypesLoading, selectOrderTypesProcessMessage, selectOrderTypesSuccess } from '@/src/app/store/slices/orderTypesSlice'
+import { clearProcessMessageOrderTypes, editOrderTypeSlice, fetchOrderTypeById, selectOrderTypesLoading, selectOrderTypesProcessMessage, selectOrderTypesSuccess, setSuccessOrderTypes } from '@/src/app/store/slices/orderTypesSlice'
 import { triggerReload } from '@/src/app/store/slices/reloadSlice'
 import { fillToastInfo } from '@/src/app/store/slices/toastSlice'
 import { OrderType } from '@/src/app/types/orders'
@@ -95,11 +95,11 @@ export default function EditOrderType({ id }: Props) {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            dispatch(clearProcessMessageBranch())
+            dispatch(clearProcessMessageOrderTypes())
         }
 
 
-        if (success) dispatch(triggerReload()); dispatch(setSuccessBranch(false))
+        if (success) dispatch(triggerReload()); dispatch(setSuccessOrderTypes(false))
 
     }, [message, success])
 

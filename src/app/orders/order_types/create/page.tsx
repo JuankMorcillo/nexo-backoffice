@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AppDispatch } from '@/src/app/store'
 import { useSession } from 'next-auth/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearProcessMessageOrderTypes, createOrderTypeSlice, selectOrderTypesLoading, selectOrderTypesProcessMessage, selectOrderTypesSuccess } from '@/src/app/store/slices/orderTypesSlice'
+import { clearProcessMessageOrderTypes, createOrderTypeSlice, selectOrderTypesLoading, selectOrderTypesProcessMessage, selectOrderTypesSuccess, setSuccessOrderTypes } from '@/src/app/store/slices/orderTypesSlice'
 import Iconos from '@/src/app/components/ui/hooks/iconos'
 import { OrderType } from '@/src/app/types/orders'
 import { fillToastInfo } from '@/src/app/store/slices/toastSlice'
@@ -80,7 +80,7 @@ export default function CreateOrderType() {
         }
 
 
-        if (success) dispatch(triggerReload()); dispatch(setSuccessBranch(false))
+        if (success) dispatch(triggerReload()); dispatch(setSuccessOrderTypes(false))
 
     }, [message, success])
 

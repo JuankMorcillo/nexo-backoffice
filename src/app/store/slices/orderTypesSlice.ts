@@ -1,4 +1,4 @@
-import { createOrderType, getOrderTypes } from "@/src/lib/api/order_types";
+import { createOrderType, editOrderType, getOrderTypeById, getOrderTypes } from "@/src/lib/api/order_types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { OrderType } from "../../types/orders";
 
@@ -34,12 +34,45 @@ export const fetchOrderTypes = createAsyncThunk<any, FetchPayload, { rejectValue
     }
 )
 
+export const fetchOrderTypeById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'order-types/fetchOrderTypeById',
+    async ({ token, id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getOrderTypeById(token, id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
 export const createOrderTypeSlice = createAsyncThunk<any, { order_type: OrderType, token: string }, { rejectValue: string }>(
     'order-types/createOrderType',
     async (orderType, { rejectWithValue }) => {
 
         try {
             const result = await createOrderType(orderType.token || '', orderType.order_type);
+
+            return result;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const editOrderTypeSlice = createAsyncThunk<any, { order_type: OrderType, token: string }, { rejectValue: string }>(
+    'order-types/editOrderType',
+    async (orderType, { rejectWithValue }) => {
+
+        try {
+
+            const result = await editOrderType(orderType.token || '', orderType.order_type);
 
             return result;
         } catch (error: any) {
@@ -87,6 +120,22 @@ const orderTypesSlice = createSlice({
                 state.success = false;
             })
 
+        // fetch order type by id
+        builder
+            .addCase(fetchOrderTypeById.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchOrderTypeById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.orderTypes = action.payload.data || [];
+                state.total = action.payload.total || 0;
+            })
+            .addCase(fetchOrderTypeById.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar el tipo de orden';
+            })
+
         // create order type
         builder
             .addCase(createOrderTypeSlice.pending, (state) => {
@@ -101,6 +150,23 @@ const orderTypesSlice = createSlice({
             .addCase(createOrderTypeSlice.rejected, (state, action) => {
                 state.loading = false;
                 state.processMessage = action.payload || 'Error al crear el tipo de orden';
+                state.success = false;
+            })
+
+        // edit order type
+        builder
+            .addCase(editOrderTypeSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+            })
+            .addCase(editOrderTypeSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = 'Tipo de orden actualizado exitosamente';
+                state.success = true;
+            })
+            .addCase(editOrderTypeSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al actualizar el tipo de orden';
                 state.success = false;
             })
 

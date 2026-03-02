@@ -12,7 +12,8 @@ export interface Task {
 }
 
 export interface OrderType {
-    id: number;
+    id?: number;
     name: string;
     description?: string;
+    subscribers_id?: number;
 }

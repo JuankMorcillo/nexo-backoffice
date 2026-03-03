@@ -54,7 +54,7 @@ export default function CreateQuestionType() {
                 createQuestionTypeSlice({ token: session.user.access_token, question_type: info as QuestionType })
             )
 
-            if (result.type == 'questionTypes/createQuestionType/fulfilled') {
+            if (result.type == 'question-types/createQuestionType/fulfilled') {
                 setInfo(undefined)
             }
 

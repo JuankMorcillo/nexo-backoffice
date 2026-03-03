@@ -15,7 +15,7 @@ type Props = {
     id: number
 }
 
-export default function page({ id }: Props) {
+export default function EditQuestionType({ id }: Props) {
 
     const dispatch = useDispatch<AppDispatch>()
     const { data: session } = useSession()

@@ -11,5 +11,10 @@ export const forms_columns: Column<Form>[] = [
         accessorKey: 'description',
         header: 'Descripción',
         size: 300
+    },
+    {
+        accessorKey: 'ordersType.name',
+        header: 'Formulario para tipo de orden',
+        size: 200
     }
 ]

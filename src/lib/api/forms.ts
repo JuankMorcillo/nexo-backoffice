@@ -44,7 +44,7 @@ export async function getFormById(token: string, id: number) {
 export async function createForm(token: string, data: Form) {
 
     const options: OptionsProps = {
-        endpoint: 'forms',
+        endpoint: 'forms/formWithQuestions',
         method: 'POST' as const,
         headers: {
             Authorization: 'bearer ' + token,

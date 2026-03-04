@@ -1,0 +1,22 @@
+export type Form = {
+    id?: number
+    name?: string
+    description: string
+    subscribers_id?: number
+    questions: Question[]
+}
+
+export type Question = {
+    id?: number
+    name: string
+    description: string
+    required: number
+    question_type_id: number
+    responses?: string[]
+}
+
+export type QuestionType = {
+    id?: number
+    name: string
+    description: string
+}

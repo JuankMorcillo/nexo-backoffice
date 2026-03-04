@@ -1,4 +1,4 @@
-import { createForm, getForms } from "@/src/lib/api/forms";
+import { createForm, editForm, getFormById, getForms } from "@/src/lib/api/forms";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Form } from "../../types/forms";
 
@@ -33,12 +33,46 @@ export const fetchForms = createAsyncThunk<any, FetchPayload, { rejectValue: str
 
     }
 )
+
+export const fetchFormById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'forms/fetchFormById',
+    async ({ token, id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getFormById(token, id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
 export const createFormSlice = createAsyncThunk<any, { form: Form, token: string }, { rejectValue: string }>(
     'forms/createForm',
     async (form, { rejectWithValue }) => {
 
         try {
             const result = await createForm(form.token || '', form.form);
+
+            return result;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const editFormSlice = createAsyncThunk<any, { form: Form, token: string }, { rejectValue: string }>(
+    'forms/editForm',
+    async (form, { rejectWithValue }) => {
+
+        try {
+
+            const result = await editForm(form.token || '', form.form);
 
             return result;
         } catch (error: any) {
@@ -83,6 +117,22 @@ const formsSlice = createSlice({
                 state.message = action.payload || 'Error al cargar los formularios';
             })
 
+        // fetch form by id
+        builder
+            .addCase(fetchFormById.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchFormById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.forms = action.payload.data || [];
+                state.total = action.payload.total || 0;
+            })
+            .addCase(fetchFormById.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar el formulario';
+            })
+
         // create form
         builder
             .addCase(createFormSlice.pending, (state) => {
@@ -97,6 +147,23 @@ const formsSlice = createSlice({
             .addCase(createFormSlice.rejected, (state, action) => {
                 state.loading = false;
                 state.processMessage = action.payload || 'Error al crear el formulario';
+                state.success = false;
+            })
+
+        // edit form
+        builder
+            .addCase(editFormSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+            })
+            .addCase(editFormSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload.message || 'Formulario editado exitosamente';
+                state.success = true;
+            })
+            .addCase(editFormSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al editar el formulario';
                 state.success = false;
             })
 

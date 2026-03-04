@@ -1,5 +1,6 @@
 export type Form = {
     id?: number
+    name?: string
     description: string
     subscribers_id?: number
     questions: Question[]

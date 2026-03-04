@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import Inputs from '../../components/inputs'
 import QuestionBuilder from '../../components/QuestionBuilder'
 import { fillToastInfo } from '../../store/slices/toastSlice'
+import useOrderTypes from '@/src/hooks/useOrderTypes';
 
 export default function CreateForm() {
 
@@ -26,6 +27,7 @@ export default function CreateForm() {
     const [question_type, setQuestionType] = useState()
 
     const { questionTypes } = useQuestionTypes()
+    const { orderTypes } = useOrderTypes()
 
     const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
@@ -51,6 +53,14 @@ export default function CreateForm() {
             type: 'text',
             required: true,
         },
+        {
+            id: 'orders_types_id',
+            label: 'Tipo de orden',
+            type: 'select',
+            list: true,
+            options: orderTypes,
+            required: true,
+        }
     ]
 
     const onSubmit = async (data: any) => {
@@ -84,9 +94,9 @@ export default function CreateForm() {
 
     useEffect(() => {
 
-        if (questionTypes) setDidLoad(true)
+        if (questionTypes && orderTypes) setDidLoad(true)
 
-    }, [questionTypes])
+    }, [questionTypes, orderTypes])
 
     return (
         <>

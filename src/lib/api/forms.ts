@@ -64,7 +64,7 @@ export async function createForm(token: string, data: Form) {
 export async function editForm(token: string, data: Form) {
 
     const options: OptionsProps = {
-        endpoint: `forms/${data.id}`,
+        endpoint: `forms/${data.id}/withQuestions`,
         method: 'PATCH' as const,
         headers: {
             Authorization: 'bearer ' + token,

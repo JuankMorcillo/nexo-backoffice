@@ -34,7 +34,7 @@ export default function QuestionBuilder({
   }
 
   return (
-    <div className="border border-gray-300 rounded-lg p-6 mt-6 w-full ">
+    <div className="p-4 w-full ">
       <div className="flex justify-between items-center mb-6 gap-2">
         <h2 className="text-lg font-bold">Preguntas</h2>
         <span className="text-sm text-gray-500">{fields.length} Preguntas Agregadas</span>
@@ -53,7 +53,7 @@ export default function QuestionBuilder({
             || selectedType?.label?.toLowerCase().includes('selector')
 
           return (
-            <div key={field.id} className="flex flex-row border border-gray-200 rounded-lg p-4 bg-gray-50 gap-4">
+            <div key={field.id} className="flex flex-row border border-gray-300 rounded-lg p-4 bg-gray-50 gap-4">
               {/* Name */}
               <div className="mb-4 w-full max-w-xs">
                 <label className="block text-sm font-medium mb-2">Nombre</label>

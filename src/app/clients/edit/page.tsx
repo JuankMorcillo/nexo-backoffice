@@ -118,7 +118,7 @@ export default function EditClient({ id }: Props) {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessage()
+            dispatch(clearProcessMessage())
         }
 
 

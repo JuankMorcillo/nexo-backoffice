@@ -112,7 +112,7 @@ export default function EditBranch({ id }: Props) {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessageBranch()
+            dispatch(clearProcessMessageBranch())
         }
 
 

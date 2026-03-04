@@ -96,7 +96,7 @@ export default function CreateEquipment() {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessageEqu()
+            dispatch(clearProcessMessageEqu())
         }
 
 

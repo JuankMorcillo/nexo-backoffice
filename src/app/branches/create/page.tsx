@@ -90,7 +90,7 @@ export default function CreateBranch() {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessageBranch()
+            dispatch(clearProcessMessageBranch())
         }
 
 

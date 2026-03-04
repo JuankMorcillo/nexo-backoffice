@@ -13,6 +13,7 @@ import { fillToastInfo } from '../../../store/slices/toastSlice';
 import { useParams } from 'next/navigation';
 import QuestionBuilder from '@/src/app/components/QuestionBuilder';
 import Inputs from '@/src/app/components/inputs';
+import useOrderTypes from '@/src/hooks/useOrderTypes';
 
 type Props = {
     id: number
@@ -33,6 +34,7 @@ export default function EditForm({ id }: Props) {
     const [data, setData] = useState()
 
     const { questionTypes } = useQuestionTypes()
+    const { orderTypes } = useOrderTypes()
 
     const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
@@ -58,6 +60,14 @@ export default function EditForm({ id }: Props) {
             type: 'text',
             required: true,
         },
+        {
+            id: 'orders_types_id',
+            label: 'Tipo de orden',
+            type: 'select',
+            list: true,
+            options: orderTypes,
+            required: true,
+        }
     ]
 
     const fetchForm = async () => {
@@ -73,7 +83,7 @@ export default function EditForm({ id }: Props) {
                         ...response.payload,
                         questions: response.payload.questions?.map((q: any) => ({
                             ...q,
-                            responses: q.responses?.map((r: any) => r.value) || [] // Extrae solo los valores
+                            responses: q.responses?.map((r: any) => r.value) || []
                         }))
                     }
                     setData(formattedData)
@@ -120,9 +130,9 @@ export default function EditForm({ id }: Props) {
 
     useEffect(() => {
 
-        if (questionTypes && data) setDidLoad(true)
+        if (questionTypes && orderTypes && data) setDidLoad(true)
 
-    }, [questionTypes, data])
+    }, [questionTypes, orderTypes, data])
 
     return (
         <>

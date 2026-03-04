@@ -96,7 +96,7 @@ export default function CreateClient() {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessage()
+            dispatch(clearProcessMessage())
         }
 
 

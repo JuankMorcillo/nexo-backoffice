@@ -119,7 +119,7 @@ export default function EditEquipment({ id }: Props) {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessageEqu()
+            dispatch(clearProcessMessageEqu())
         }
 
 

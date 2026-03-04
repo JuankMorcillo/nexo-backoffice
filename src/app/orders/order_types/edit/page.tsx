@@ -59,7 +59,7 @@ export default function EditOrderType({ id }: Props) {
         if (session?.user.access_token) {
             try {
                 const response = await dispatch(
-                    fetchOrderTypeById({ token: session.user.access_token, id: 1 })
+                    fetchOrderTypeById({ token: session.user.access_token, id })
                 )
                 if (response.type === 'order-types/fetchOrderTypeById/fulfilled') {
                     setData(response.payload);

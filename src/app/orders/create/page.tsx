@@ -90,7 +90,7 @@ export default function CreateOrder() {
                 icon: success ? successIcon : circleXMarkIcon,
                 duration: 3000,
             }))
-            clearProcessMessageOrder()
+            dispatch(clearProcessMessageOrder())
         }
 
 

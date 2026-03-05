@@ -16,6 +16,7 @@ import Iconos from '../../../components/ui/hooks/iconos';
 import { useParams } from 'next/navigation';
 import useEquipmentInfo from '@/src/hooks/useEquipmentInfo';
 import useOrderTypes from '@/src/hooks/useOrderTypes';
+import useTechnicianInfo from '@/src/hooks/useTechnicianInfo';
 
 export default function EditOrder() {
 
@@ -36,6 +37,7 @@ export default function EditOrder() {
     const { branches } = useBranchInfo({ client_id })
     const { equipments } = useEquipmentInfo({ branch_id })
     const { orderTypes } = useOrderTypes()
+    const { technicians } = useTechnicianInfo()
 
     const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
@@ -128,9 +130,9 @@ export default function EditOrder() {
 
     useEffect(() => {
 
-        if (clients && branches && equipments && orderTypes && data) setDidLoad(true)
+        if (clients && branches && equipments && orderTypes && technicians && data) setDidLoad(true)
 
-    }, [clients, branches, equipments, orderTypes, data])
+    }, [clients, branches, equipments, orderTypes, technicians, data])
 
 
     return (
@@ -153,8 +155,8 @@ export default function EditOrder() {
                             {/* Task Builder */}
                             <TaskBuilder
                                 form={form}
-                                equipments={[{ value: 1, label: 'Equipo 1' }]}
-                                technicians={[{ value: 1, label: 'Técnico 1' }]}
+                                equipments={equipments}
+                                technicians={technicians}
                             />
                         </div>
 

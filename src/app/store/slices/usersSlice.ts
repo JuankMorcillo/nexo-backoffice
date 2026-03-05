@@ -1,6 +1,7 @@
 import {
   createUser,
   editUser,
+  getTechnicians,
   getUserById,
   getUsers,
 } from "@/src/lib/api/users";
@@ -35,17 +36,28 @@ export const fetchUsers = createAsyncThunk<any, FetchPayload, { rejectValue: str
   }
 )
 
+export const fetchTechnicians = createAsyncThunk<any, FetchPayload, { rejectValue: string }>(
+  'users/fetchTechnicians',
+  async ({ token, params }, { rejectWithValue }) => {
+    try {
+      const response = await getTechnicians(token, params);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+)
 
 export const fetchUserById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
-    'users/fetchUserById',
-    async ({ token, id }, { rejectWithValue }) => {
-        try {
-            const response = await getUserById(token, id);
-            return response;
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data || error.message);
-        }
+  'users/fetchUserById',
+  async ({ token, id }, { rejectWithValue }) => {
+    try {
+      const response = await getUserById(token, id);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || error.message);
     }
+  }
 )
 
 export const createUserSlice = createAsyncThunk<any, { token: string; user: User }, { rejectValue: string }>(
@@ -113,6 +125,22 @@ const usersSlice = createSlice({
         state.message = action.payload || 'Error al consultar los usuarios';
       });
 
+    // Fetch Technicians
+    builder
+      .addCase(fetchTechnicians.pending, (state) => {
+        state.loading = true;
+        state.message = '';
+      })
+      .addCase(fetchTechnicians.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload.data || [];
+        state.total = action.payload.total || 0;
+      })
+      .addCase(fetchTechnicians.rejected, (state, action) => {
+        state.loading = false;
+        state.message = action.payload || 'Error al consultar los técnicos';
+      })
+
     // Fetch Users By ID
     builder
       .addCase(fetchUserById.pending, (state) => {
@@ -144,7 +172,7 @@ const usersSlice = createSlice({
         state.processMessage = action.payload || 'Error al crear el usuario';
         state.success = false;
       })
-      
+
     // Edit Users
     builder
       .addCase(editUserSlice.pending, (state) => {

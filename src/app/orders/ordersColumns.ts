@@ -13,7 +13,7 @@ export const orders_columns: Column<Order>[] = [
         size: 150
     },
     {
-        accessorKey: 'order_type.name',
+        accessorKey: 'ordersType.name',
         header: 'Tipo de Orden',
         size: 150
     },

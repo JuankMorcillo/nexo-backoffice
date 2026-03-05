@@ -1,4 +1,5 @@
 import { FetchApi } from "./fetchApi";
+import { Permission } from "@/src/app/types/permissions";
 
 
 export async function getPermissions(token: string, params = {}) {
@@ -18,4 +19,25 @@ export async function getPermissions(token: string, params = {}) {
     console.log(error);
     throw error;
   }
+}
+
+
+export async function createPermission(token: string, data: Permission) {
+
+    const options: OptionsProps = {
+        endpoint: 'permissions',
+        method: 'POST' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: data
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
 }

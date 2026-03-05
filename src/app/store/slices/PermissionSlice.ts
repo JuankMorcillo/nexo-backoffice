@@ -1,5 +1,6 @@
-import { getPermissions } from "@/src/lib/api/permissions";
+import { getPermissions, createPermission } from "@/src/lib/api/permissions";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { Permission } from "../../types/permissions";
 
 const initialState = {
   permissions: [],
@@ -33,6 +34,22 @@ export const fetchPermissions = createAsyncThunk<any, FetchPayload, { rejectValu
   }
 )
 
+export const createPermissionSlice = createAsyncThunk<any, { permission: Permission, token: string }, { rejectValue: string }>(
+  'permissions/createPermission',
+  async (permission, { rejectWithValue }) => {
+
+    try {
+      const result = await createPermission(permission.token || '', permission.permission);
+
+      return result;
+    } catch (error: any) {
+      const errorMessage = error || 'Error desconocido';
+      return rejectWithValue(errorMessage);
+    }
+
+  }
+)
+
 const permissionSlice = createSlice({
   name: 'permissions',
   initialState,
@@ -43,10 +60,10 @@ const permissionSlice = createSlice({
     clearMessage(state) {
       state.message = '';
     },
-    clearProcessMessageEqu(state) {
+    clearProcessMessagePermission(state) {
       state.processMessageEqu = '';
     },
-    setSuccessEqu(state, action) {
+    setSuccessPermission(state, action) {
       state.success = action.payload;
     }
   },
@@ -64,12 +81,30 @@ const permissionSlice = createSlice({
       })
       .addCase(fetchPermissions.rejected, (state, action) => {
         state.loading = false;
-        state.message = action.payload || 'Error al cargar los equipos';
+        state.message = action.payload || 'Error al cargar los Permisos';
       })
+
+    // Create Permission
+    builder
+      .addCase(createPermissionSlice.pending, (state) => {
+        state.loading = true;
+        state.processMessageEqu = '';
+      })
+      .addCase(createPermissionSlice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.processMessageEqu = action.payload.message || 'Permiso creado exitosamente';
+        state.success = true;
+      })
+      .addCase(createPermissionSlice.rejected, (state, action) => {
+        state.loading = false;
+        state.processMessageEqu = action.payload || 'Error al crear el Permis';
+        state.success = false;
+      })
+
   }
 })
 
-export const { setParams, clearMessage, clearProcessMessageEqu, setSuccessEqu } = permissionSlice.actions;
+export const { setParams, clearMessage, clearProcessMessagePermission, setSuccessPermission } = permissionSlice.actions;
 
 export const selectPermissionLoading = (state: any) => state.permissions.loading;
 export const selectPermissionSuccess = (state: any) => state.permissions.success;

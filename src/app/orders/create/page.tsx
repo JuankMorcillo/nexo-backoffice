@@ -15,6 +15,7 @@ import { fillToastInfo } from '../../store/slices/toastSlice';
 import Iconos from '../../components/ui/hooks/iconos';
 import useOrderTypes from '@/src/hooks/useOrderTypes';
 import useEquipmentInfo from '@/src/hooks/useEquipmentInfo';
+import useTechnicianInfo from '@/src/hooks/useTechnicianInfo';
 
 export default function CreateOrder() {
     const dispatch = useDispatch<AppDispatch>()
@@ -32,6 +33,7 @@ export default function CreateOrder() {
     const { branches } = useBranchInfo({ client_id })
     const { equipments } = useEquipmentInfo({ branch_id })
     const { orderTypes } = useOrderTypes()
+    const { technicians } = useTechnicianInfo()
 
     const { successIcon } = Iconos({ classNames: 'size-6 text-green-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
     const { circleXMarkIcon } = Iconos({ classNames: 'size-6 text-red-500', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
@@ -100,9 +102,9 @@ export default function CreateOrder() {
 
     useEffect(() => {
 
-        if (clients && orderTypes) setDidLoad(true)
+        if (clients && orderTypes && technicians) setDidLoad(true)
 
-    }, [clients, orderTypes])
+    }, [clients, orderTypes, technicians])
 
 
     return (
@@ -126,7 +128,7 @@ export default function CreateOrder() {
                             <TaskBuilder
                                 form={form}
                                 equipments={equipments}
-                                technicians={[{ value: 1, label: 'Técnico 1' }]}
+                                technicians={technicians}
                             />
                         </div>
 

@@ -10,6 +10,7 @@ import orderTypesReducer from './slices/orderTypesSlice';
 import usersReducer from './slices/usersSlice';
 import questionTypesReducer from './slices/questionTypesSlice';
 import formsReducer from './slices/formsSlice';
+import permissionReducer from './slices/PermissionSlice';
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
         users: usersReducer,
         question_types: questionTypesReducer,
         forms: formsReducer,
+        permissions: permissionReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

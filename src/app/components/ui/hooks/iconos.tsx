@@ -81,6 +81,10 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         <path d="M128 252.6C128 148.4 214 64 320 64C426 64 512 148.4 512 252.6C512 371.9 391.8 514.9 341.6 569.4C329.8 582.2 310.1 582.2 298.3 569.4C248.1 514.9 127.9 371.9 127.9 252.6zM320 320C355.3 320 384 291.3 384 256C384 220.7 355.3 192 320 192C284.7 192 256 220.7 256 256C256 291.3 284.7 320 320 320z" />
     </svg>
 
+   const SHIELDHALVEDICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M320 64C324.6 64 329.2 65 333.4 66.9L521.8 146.8C543.8 156.1 560.2 177.8 560.1 204C559.6 303.2 518.8 484.7 346.5 567.2C329.8 575.2 310.4 575.2 293.7 567.2C121.3 484.7 80.6 303.2 80.1 204C80 177.8 96.4 156.1 118.4 146.8L306.7 66.9C310.9 65 315.4 64 320 64zM320 130.8L320 508.9C458 442.1 495.1 294.1 496 205.5L320 130.9L320 130.9z"/>
+    </svg>
+
     return {
         clientsIcon: CLIENTSICON,
         homeIcon: HOMEICON,
@@ -99,7 +103,8 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         usersIcon: USERSICON,
         bussinessCaseIcon: BUSSINESSCASEICON,
         clipboardListIcon: CLIPBOARDLISTICON,
-        locationDotIcon: LOCATIONDOTICON
+        locationDotIcon: LOCATIONDOTICON,
+        shieldHalvedIcon:SHIELDHALVEDICON
     }
 
 }

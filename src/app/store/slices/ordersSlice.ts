@@ -1,4 +1,4 @@
-import { getOrders, getOrderById, createOrder, editOrder } from "@/src/lib/api/orders"
+import { getOrders, getOrderById, createOrder, editOrder, getOrdersUser } from "@/src/lib/api/orders"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Equipment } from "../../types/equipment";
 import { Order } from "../../types/orders";
@@ -41,6 +41,22 @@ export const fetchOrderById = createAsyncThunk<any, { token: string; id: number 
 
         try {
             const response = await getOrderById(token, id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const fetchOrdersUser = createAsyncThunk<any, { token: string }, { rejectValue: string }>(
+    'orders/fetchOrdersUser',
+    async ({ token }, { rejectWithValue }) => {
+
+        try {
+            const response = await getOrdersUser(token);
 
             return response;
         } catch (error: any) {
@@ -134,6 +150,22 @@ const orderSlice = createSlice({
                 state.message = action.payload || 'Error al cargar la orden';
             })
 
+        // Fetch Orders User    
+        builder
+            .addCase(fetchOrdersUser.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchOrdersUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.orders = action.payload.data || [];
+                state.total = action.payload.total || 0;
+            })
+            .addCase(fetchOrdersUser.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar las ordenes del usuario';
+            })
+
         // Create Order
         builder
             .addCase(createOrderSlice.pending, (state) => {
@@ -172,6 +204,7 @@ const orderSlice = createSlice({
 
 export const { setParams, clearMessage, clearProcessMessageOrder, setSuccessOrder } = orderSlice.actions;
 
+export const selectOrders = (state: any) => state.orders.orders;
 export const selectOrderLoading = (state: any) => state.orders.loading;
 export const selectOrderSuccess = (state: any) => state.orders.success;
 export const selectOrderMessage = (state: any) => state.orders.message;

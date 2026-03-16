@@ -39,6 +39,25 @@ export async function getOrderById(token: string, id: number) {
 
 }
 
+export async function getOrdersUser(token: string) {
+
+    const options: OptionsProps = {
+        endpoint: `orders/user`,
+        method: 'GET' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        }
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
 export async function createOrder(token: string, data: Order) {
 
     const options: OptionsProps = {

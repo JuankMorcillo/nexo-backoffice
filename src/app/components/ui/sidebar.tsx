@@ -1,12 +1,12 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { toggleSidebar, selectSidebarExpanded, toggleMargin } from '../../store/slices/uiSlice'
+import { toggleSidebar, selectSidebarExpanded, toggleMargin, setWillDisplay, selectWillDisplay } from '../../store/slices/uiSlice'
 
 import Iconos from './hooks/iconos'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Sidebar() {
 
@@ -14,7 +14,7 @@ export default function Sidebar() {
 
     const [subMenu, setSubMenu] = useState('')
 
-    const [expandedSubMenu, setExpandedSubMenu] = useState(false)
+    const willDisplay = useSelector(selectWillDisplay)
 
     const { clientsIcon, homeIcon, hammerIcon, usersIcon, bussinessCaseIcon, clipboardListIcon, shieldHalvedIcon } = Iconos({ fill: 'currentColor', classNames: 'size-6', stroke: 'currentColor', strokeWidth: 1.5 })
 
@@ -96,25 +96,27 @@ export default function Sidebar() {
             ]
         },
         {
+            id: 'users',
             name: 'Usuarios',
             href: '/users',
             icon: usersIcon
-        },        
+        },
         {
-          name: "Permisos",
-          href: "/permissions",
-          icon: shieldHalvedIcon,
+            id: 'permissions',
+            name: "Permisos",
+            href: "/permissions",
+            icon: shieldHalvedIcon,
         },
     ]
 
+    useEffect(() => {
+        dispatch(setWillDisplay(pathname))
+    }, [pathname])
+
     return (
         <>
-            {session &&
-                <aside className={`fixed flex flex-col bg-linear-to-br border-r border-gray-200
-            transition-all duration-500 ease-in-out will-change-transform lg:translate-x-0
-            shadow-md h-screen bg-white
-        ${expanded ? 'w-64' : 'w-23'}
-        `}>
+            {session && willDisplay &&
+                <aside className={`fixed flex flex-col bg-linear-to-br border-r border-gray-200 transition-all duration-500 ease-in-out will-change-transform lg:translate-x-0 shadow-md h-screen bg-white ${expanded ? 'w-64' : 'w-23'}`}>
 
                     <div className='h-14 flex items-center justify-center mb-4 mt-2'>
                         <div className='flex items-center justify-center bg-blue-500 text-white rounded-lg p-2'>

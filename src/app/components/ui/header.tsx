@@ -2,10 +2,11 @@
 
 import useUserInitials from '@/src/hooks/useUserInitials';
 import { signOut, useSession } from 'next-auth/react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '../modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectSidebarExpanded } from '../../store/slices/uiSlice';
+import { selectSidebarExpanded, selectWillDisplay, setWillDisplay } from '../../store/slices/uiSlice';
+import { usePathname } from 'next/navigation';
 
 const LOGOUTICON = {
     'name': 'logout',
@@ -29,6 +30,10 @@ export default function Header() {
 
     const expanded = useSelector(selectSidebarExpanded)
 
+    const willDisplay = useSelector(selectWillDisplay)
+
+    const pathname = usePathname()
+
     const mainContentMargin = expanded
         ? "lg:ml-[255px]"
         : "lg:ml-[92px]";
@@ -42,12 +47,13 @@ export default function Header() {
         signOut({ redirect: true, callbackUrl: '/login' });
     };
 
+    useEffect(() => {
+        dispatch(setWillDisplay(pathname))
+    }, [pathname])
+
     return (
         <>
-            {session && <div className={`h-14 border-b border-gray-200 shadow-md w-full flex items-center 
-            transition-all duration-500 ease-in-out
-        justify-between px-6 py-4 bg-linear-to-br bg-white
-        ${mainContentMargin} ${headerWidth}`}>
+            {session && willDisplay && <div className={`h-14 border-b border-gray-200 shadow-md w-full flex items-center transition-all duration-500 ease-in-out justify-between px-6 py-4 bg-linear-to-br bg-white ${mainContentMargin} ${headerWidth}`}>
 
                 <div className='ml-4 text-black font-bold text-lg'>
                     Bienvenido de nuevo, {session?.user.user.name}!

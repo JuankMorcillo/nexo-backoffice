@@ -2,13 +2,13 @@
 
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store';
+import { AppDispatch } from '../../store';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { fetchOrders } from '../store/slices/ordersSlice';
-import { Actions, TopActions } from '../types/table';
-import Iconos from '../components/ui/hooks/iconos';
-import MyTable from '../components/table';
+import { fetchOrders } from '../../store/slices/ordersSlice';
+import { Actions, TopActions } from '../../types/table';
+import Iconos from '../../components/ui/hooks/iconos';
+import MyTable from '../../components/table';
 import { orders_columns } from './ordersColumns';
 
 

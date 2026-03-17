@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useSelector } from 'react-redux';
-import { selectMainContentMargin, selectSidebarExpanded } from '../store/slices/uiSlice';
+import { selectMainContentMargin, selectSidebarExpanded } from '../../store/slices/uiSlice';
 
 type Props = {
     children: React.ReactNode

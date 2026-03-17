@@ -1,5 +1,5 @@
-import { Order } from "../types/orders";
-import { Column } from "../types/table";
+import { Order } from "../../types/orders";
+import { Column } from "../../types/table";
 
 export const orders_columns: Column<Order>[] = [
     {

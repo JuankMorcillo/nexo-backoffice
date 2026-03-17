@@ -42,8 +42,7 @@ export default function User_Orders() {
 
             {
                 orders && orders.length > 0 ?
-                    <div className='flex flex-col w-full max-w-120'>
-                        <h2>Órdenes del usuario</h2>
+                    <div className='flex flex-col w-full max-w-120 min-h-screen p-4'>
 
                         <div className='flex flex-col'>
                             {
@@ -74,7 +73,7 @@ export default function User_Orders() {
                                                 </div>
                                                 <div className="w-full bg-slate-100  h-1.5 rounded-full overflow-hidden">
                                                     <div
-                                                        className="bg-red-500 h-full rounded-full"
+                                                        className="bg-[#137fec] h-full rounded-full transition-all duration-300"
                                                         style={{
                                                             width: `${progressPercentage}%`
                                                         }}

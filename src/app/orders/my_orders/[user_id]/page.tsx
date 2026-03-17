@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: { user_id: string } }): Promise<Metadata> {
     return {
-        title: `Mis órdenes - Usuario ${params.user_id}`,
+        title: `Mis órdenes - Usuario`,
         description: 'Visualiza tus órdenes pendientes',
     };
 }

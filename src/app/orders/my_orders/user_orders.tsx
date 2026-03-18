@@ -52,7 +52,7 @@ export default function User_Orders() {
                                     const progressPercentage = (completedTasks / totalTasks) * 100;
                                     return (
 
-                                        <div key={order.id} className='flex flex-col bg-white p-4 mb-4 rounded-xl shadow-sm border-l-[6px] border-l-[#137fec]'>
+                                        <div key={order.id} className='flex flex-col bg-white p-4 mb-4 rounded-xl shadow-sm border-l-[6px] border-l-[#137fec] active:bg-gray-200 transition-all duration-300 select-none'>
 
                                             <span className='font-bold'>
                                                 {order.ordersType.name}

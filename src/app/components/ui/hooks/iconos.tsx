@@ -97,6 +97,24 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         <path d="M320 64C302.3 64 288 78.3 288 96L288 99.2C215 114 160 178.6 160 256L160 277.7C160 325.8 143.6 372.5 113.6 410.1L103.8 422.3C98.7 428.6 96 436.4 96 444.5C96 464.1 111.9 480 131.5 480L508.4 480C528 480 543.9 464.1 543.9 444.5C543.9 436.4 541.2 428.6 536.1 422.3L526.3 410.1C496.4 372.5 480 325.8 480 277.7L480 256C480 178.6 425 114 352 99.2L352 96C352 78.3 337.7 64 320 64zM258 528C265.1 555.6 290.2 576 320 576C349.8 576 374.9 555.6 382 528L258 528z" />
     </svg>
 
+    const CIRCLEICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z" />
+    </svg>
+
+    const CIRCLECHECKICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM438 209.7C427.3 201.9 412.3 204.3 404.5 215L285.1 379.2L233 327.1C223.6 317.7 208.4 317.7 199.1 327.1C189.8 336.5 189.7 351.7 199.1 361L271.1 433C276.1 438 282.9 440.5 289.9 440C296.9 439.5 303.3 435.9 307.4 430.2L443.3 243.2C451.1 232.5 448.7 217.5 438 209.7z" />
+    </svg>
+
+    const CHECKICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" className={classNames} fill={fill} stroke={stroke} strokeWidth={strokeWidth}>
+        <path d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z" />
+    </svg>
+
+    //Hecho con gemini 3.1
+    const DOUBLECHECKICON = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={classNames} fill="none" stroke={stroke || fill || "currentColor"} strokeWidth={strokeWidth || 2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 6 L6 17 L2 13" />
+        <path d="M23 6 L12 17 L10 15" />
+    </svg>
+
     return {
         clientsIcon: CLIENTSICON,
         homeIcon: HOMEICON,
@@ -119,7 +137,11 @@ export default function Iconos({ fill, classNames, stroke, strokeWidth }: iconPr
         shieldHalvedIcon: SHIELDHALVEDICON,
         helmetIcon: HELMETICON,
         searchIcon: SEARCHICON,
-        bellIcon: BELLICON
+        bellIcon: BELLICON,
+        circleIcon: CIRCLEICON,
+        circleCheckIcon: CIRCLECHECKICON,
+        checkIcon: CHECKICON,
+        doubleCheckIcon: DOUBLECHECKICON
     }
 
 }

@@ -50,7 +50,7 @@ export default function Forms({ styles, data, setInfo, inputs, submitting }: Inp
                                 >
                                     <label htmlFor={input.id} key={input.id + 'label'}>{input.label}</label>
                                     {
-                                        input.list ? (
+                                        input.type == 'select' ? (
                                             <Controller
                                                 key={input.id}
                                                 control={control}

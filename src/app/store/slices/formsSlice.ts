@@ -172,6 +172,7 @@ const formsSlice = createSlice({
 
 export const { setFormsParams, clearFormsMessage, clearFormsProcessMessage, setFormsSuccess } = formsSlice.actions;
 
+export const selectForms = (state: any) => state.forms.forms;
 export const selectFormsLoading = (state: any) => state.forms.loading;
 export const selectFormsSuccess = (state: any) => state.forms.success;
 export const selectFormsMessage = (state: any) => state.forms.message;

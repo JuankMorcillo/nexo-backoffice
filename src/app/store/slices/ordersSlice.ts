@@ -1,4 +1,4 @@
-import { getOrders, getOrderById, createOrder, editOrder, getOrdersUser } from "@/src/lib/api/orders"
+import { getOrders, getOrderById, createOrder, editOrder, getOrdersUser, getTasksUser } from "@/src/lib/api/orders"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Equipment } from "../../types/equipment";
 import { Order } from "../../types/orders";
@@ -57,6 +57,22 @@ export const fetchOrdersUser = createAsyncThunk<any, { token: string }, { reject
 
         try {
             const response = await getOrdersUser(token);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const fetchTasksUser = createAsyncThunk<any, { token: string, order_id: number }, { rejectValue: string }>(
+    'orders/fetchTasksUser',
+    async ({ token, order_id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getTasksUser(token, order_id);
 
             return response;
         } catch (error: any) {
@@ -164,6 +180,20 @@ const orderSlice = createSlice({
             .addCase(fetchOrdersUser.rejected, (state, action) => {
                 state.loading = false;
                 state.message = action.payload || 'Error al cargar las ordenes del usuario';
+            })
+
+        // Fetch Tasks User
+        builder
+            .addCase(fetchTasksUser.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchTasksUser.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchTasksUser.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar las tareas de la orden';
             })
 
         // Create Order

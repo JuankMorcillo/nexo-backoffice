@@ -4,7 +4,7 @@ import Iconos from '@/src/app/components/ui/hooks/iconos';
 import { AppDispatch } from '@/src/app/store'
 import { fetchOrdersUser, selectOrders } from '@/src/app/store/slices/ordersSlice'
 import { useSession } from 'next-auth/react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -14,7 +14,13 @@ export default function User_Orders() {
     const { data: session } = useSession()
     const orders = useSelector(selectOrders)
 
+    const router = useRouter();
+
     const { locationDotIcon } = Iconos({ classNames: 'size-6', fill: 'currentColor', stroke: 'currentColor', strokeWidth: 1.5 })
+
+    const handleNavigateToOrder = (orderId: number) => {
+        router.push(`/orders/my_orders/tasks/${orderId}`);
+    }
 
     const fetchOrders = async () => {
         if (session?.user?.access_token) {
@@ -52,7 +58,9 @@ export default function User_Orders() {
                                     const progressPercentage = (completedTasks / totalTasks) * 100;
                                     return (
 
-                                        <div key={order.id} className='flex flex-col bg-white p-4 mb-4 rounded-xl shadow-sm border-l-[6px] border-l-[#137fec] active:bg-gray-200 transition-all duration-300 select-none'>
+                                        <div key={order.id}
+                                            onClick={() => handleNavigateToOrder(order.id)}
+                                            className='flex flex-col bg-white p-4 mb-4 rounded-xl shadow-sm border-l-[6px] border-l-[#137fec] active:bg-gray-200 transition-all duration-300 select-none'>
 
                                             <span className='font-bold'>
                                                 {order.ordersType.name}

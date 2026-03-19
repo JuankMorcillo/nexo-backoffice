@@ -40,8 +40,7 @@ export default function page() {
                 label: question.name || '',
                 type: question.questionType?.name.toLocaleLowerCase() || 'text',
                 required: question?.required == 1 ? true : false,
-                options: options,
-                question_id: question.id
+                options: options,                
             })
         }
 

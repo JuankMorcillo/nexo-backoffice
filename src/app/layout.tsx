@@ -39,9 +39,6 @@ export default function RootLayout({
         className={`${inter.variable} antialiased`}
       >
         <Providers>
-          <Toast />
-          <Sidebar />
-          <Header />
           {children}
         </Providers>
       </body>

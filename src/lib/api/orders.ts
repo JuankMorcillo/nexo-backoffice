@@ -1,4 +1,4 @@
-import { Order } from "@/src/app/types/orders"
+import { Order, Task } from "@/src/app/types/orders"
 import { FetchApi } from "./fetchApi";
 
 export async function getOrders(token: string, params = {}) {
@@ -24,6 +24,25 @@ export async function getOrderById(token: string, id: number) {
 
     const options: OptionsProps = {
         endpoint: `orders/${id}`,
+        method: 'GET' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        }
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
+export async function getTaskById(token: string, id: number) {
+
+    const options: OptionsProps = {
+        endpoint: `tasks/${id}`,
         method: 'GET' as const,
         headers: {
             Authorization: 'bearer ' + token,
@@ -101,6 +120,26 @@ export async function editOrder(token: string, data: Order) {
 
     const options: OptionsProps = {
         endpoint: `orders/${data.id}`,
+        method: 'PATCH' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: data
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
+export async function editTask(token: string, data: Task) {
+
+    const options: OptionsProps = {
+        endpoint: `tasks/${data.id}`,
         method: 'PATCH' as const,
         headers: {
             Authorization: 'bearer ' + token,

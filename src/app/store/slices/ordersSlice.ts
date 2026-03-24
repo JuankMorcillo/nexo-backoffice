@@ -1,7 +1,7 @@
-import { getOrders, getOrderById, createOrder, editOrder, getOrdersUser, getTasksUser } from "@/src/lib/api/orders"
+import { getOrders, getOrderById, createOrder, editOrder, getOrdersUser, getTasksUser, editTask, getTaskById } from "@/src/lib/api/orders"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Equipment } from "../../types/equipment";
-import { Order } from "../../types/orders";
+import { Order, Task } from "../../types/orders";
 
 const initialState = {
     orders: [],
@@ -41,6 +41,22 @@ export const fetchOrderById = createAsyncThunk<any, { token: string; id: number 
 
         try {
             const response = await getOrderById(token, id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const fetchTaskById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'orders/fetchTaskById',
+    async ({ token, id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getTaskById(token, id);
 
             return response;
         } catch (error: any) {
@@ -116,6 +132,23 @@ export const editOrderSlice = createAsyncThunk<any, { order: Order, token: strin
     }
 )
 
+export const editTaskSlice = createAsyncThunk<any, { task: Task, token: string }, { rejectValue: string }>(
+    'orders/editTask',
+    async ({ token, task }, { rejectWithValue }) => {
+
+        try {
+
+            const result = await editTask(token || '', task);
+
+            return result;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
 const orderSlice = createSlice({
     name: 'orders',
     initialState,
@@ -164,6 +197,20 @@ const orderSlice = createSlice({
             .addCase(fetchOrderById.rejected, (state, action) => {
                 state.loading = false;
                 state.message = action.payload || 'Error al cargar la orden';
+            })
+
+        // Fetch Task By Id
+        builder
+            .addCase(fetchTaskById.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchTaskById.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchTaskById.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar la tarea';
             })
 
         // Fetch Orders User    
@@ -227,6 +274,23 @@ const orderSlice = createSlice({
             .addCase(editOrderSlice.rejected, (state, action) => {
                 state.loading = false;
                 state.processMessage = action.payload || 'Error al editar la orden';
+                state.success = false;
+            })
+
+        // Edit Task
+        builder
+            .addCase(editTaskSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+            })
+            .addCase(editTaskSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload.message || 'Tarea editada exitosamente';
+                state.success = true;
+            })
+            .addCase(editTaskSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al editar la tarea';
                 state.success = false;
             })
     }

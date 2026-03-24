@@ -5,10 +5,14 @@ export interface Order {
     tasks: Task[]
 }
 
-export interface Task {    
-    description: string;    
-    equipments_id: number;
-    users_id: number;
+export interface Task {
+    id?: number;
+    description?: string;
+    equipments_id?: number;
+    users_id?: number;
+    start_date?: Date;
+    end_date?: Date;
+    status?: number;
 }
 
 export interface OrderType {

@@ -1,6 +1,6 @@
-import { createForm, editForm, getFormById, getForms } from "@/src/lib/api/forms";
+import { createForm, editForm, getFormById, getForms, responseForm } from "@/src/lib/api/forms";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Form } from "../../types/forms";
+import { Form, TaskForm } from "../../types/forms";
 
 const initialState = {
     forms: [],
@@ -73,6 +73,23 @@ export const editFormSlice = createAsyncThunk<any, { form: Form, token: string }
         try {
 
             const result = await editForm(form.token || '', form.form);
+
+            return result;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const responseFormSlice = createAsyncThunk<any, { responses: TaskForm[], token: string }, { rejectValue: string }>(
+    'forms/responseForm',
+    async ({ responses, token }, { rejectWithValue }) => {
+
+        try {
+
+            const result = await responseForm(token || '', responses);
 
             return result;
         } catch (error: any) {
@@ -164,6 +181,23 @@ const formsSlice = createSlice({
             .addCase(editFormSlice.rejected, (state, action) => {
                 state.loading = false;
                 state.processMessage = action.payload || 'Error al editar el formulario';
+                state.success = false;
+            })
+
+        // response form
+        builder
+            .addCase(responseFormSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+            })
+            .addCase(responseFormSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload.message || 'Formulario respondido exitosamente';
+                state.success = true;
+            })
+            .addCase(responseFormSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al responder el formulario';
                 state.success = false;
             })
 

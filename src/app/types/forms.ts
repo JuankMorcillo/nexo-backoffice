@@ -25,3 +25,11 @@ export type QuestionType = {
     name: string
     description: string
 }
+
+export type TaskForm = {
+    value?: string
+    tasks_id: number
+    forms_id: number
+    questions_id: number
+    responses_id?: number
+}

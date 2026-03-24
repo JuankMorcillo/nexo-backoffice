@@ -3,6 +3,7 @@
 import Iconos from '@/src/app/components/ui/hooks/iconos';
 import { AppDispatch } from '@/src/app/store'
 import { fetchTasksUser } from '@/src/app/store/slices/ordersSlice'
+import { dateFormatter } from '@/src/lib/utils/dateFormatter';
 import { useSession } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -24,8 +25,8 @@ export default function page() {
 
   const router = useRouter();
 
-  const handleNavigateToOrder = (orderId: number, form_id: number) => {
-    router.push(`/orders/my_orders/tasks/${orderId}/form/${form_id}`);
+  const handleNavigateToOrder = (task_id: number, orderId: number, form_id: number) => {
+    router.push(`/orders/my_orders/tasks/${orderId}/close_task/${task_id}/form/${form_id}`);
   }
 
   const fetchTasks = async () => {
@@ -90,11 +91,11 @@ export default function page() {
                     {
                       task.status == 4 ?
                         <span className='flex gap-2 items-center text-emerald-400 text-sm'>
-                          {doubleCheckIcon} Finalizada: {task.end_date}
+                          {doubleCheckIcon} Finalizada: {dateFormatter(task.end_date)}
                         </span>
                         :
                         <button className="w-full bg-blue-500 active:bg-blue-400 text-white font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
-                          onClick={() => { handleNavigateToOrder(Number(order_id), form_id) }}
+                          onClick={() => { handleNavigateToOrder(Number(task.id), Number(order_id), form_id) }}
                         >
                           {circleCheckIcon}
                           Cerrar Tarea

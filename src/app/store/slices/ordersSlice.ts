@@ -1,7 +1,7 @@
-import { getOrders, getOrderById, createOrder, editOrder } from "@/src/lib/api/orders"
+import { getOrders, getOrderById, createOrder, editOrder, getOrdersUser, getTasksUser, editTask, getTaskById } from "@/src/lib/api/orders"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Equipment } from "../../types/equipment";
-import { Order } from "../../types/orders";
+import { Order, Task } from "../../types/orders";
 
 const initialState = {
     orders: [],
@@ -51,6 +51,54 @@ export const fetchOrderById = createAsyncThunk<any, { token: string; id: number 
     }
 )
 
+export const fetchTaskById = createAsyncThunk<any, { token: string; id: number }, { rejectValue: string }>(
+    'orders/fetchTaskById',
+    async ({ token, id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getTaskById(token, id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const fetchOrdersUser = createAsyncThunk<any, { token: string }, { rejectValue: string }>(
+    'orders/fetchOrdersUser',
+    async ({ token }, { rejectWithValue }) => {
+
+        try {
+            const response = await getOrdersUser(token);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const fetchTasksUser = createAsyncThunk<any, { token: string, order_id: number }, { rejectValue: string }>(
+    'orders/fetchTasksUser',
+    async ({ token, order_id }, { rejectWithValue }) => {
+
+        try {
+            const response = await getTasksUser(token, order_id);
+
+            return response;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
 export const createOrderSlice = createAsyncThunk<any, { order: Order, token: string }, { rejectValue: string }>(
     'orders/createOrder',
     async (order, { rejectWithValue }) => {
@@ -74,6 +122,23 @@ export const editOrderSlice = createAsyncThunk<any, { order: Order, token: strin
         try {
 
             const result = await editOrder(order.token || '', order.order);
+
+            return result;
+        } catch (error: any) {
+            const errorMessage = error || 'Error desconocido';
+            return rejectWithValue(errorMessage);
+        }
+
+    }
+)
+
+export const editTaskSlice = createAsyncThunk<any, { task: Task, token: string }, { rejectValue: string }>(
+    'orders/editTask',
+    async ({ token, task }, { rejectWithValue }) => {
+
+        try {
+
+            const result = await editTask(token || '', task);
 
             return result;
         } catch (error: any) {
@@ -134,6 +199,50 @@ const orderSlice = createSlice({
                 state.message = action.payload || 'Error al cargar la orden';
             })
 
+        // Fetch Task By Id
+        builder
+            .addCase(fetchTaskById.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchTaskById.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchTaskById.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar la tarea';
+            })
+
+        // Fetch Orders User    
+        builder
+            .addCase(fetchOrdersUser.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchOrdersUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.orders = action.payload.data || [];
+                state.total = action.payload.total || 0;
+            })
+            .addCase(fetchOrdersUser.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar las ordenes del usuario';
+            })
+
+        // Fetch Tasks User
+        builder
+            .addCase(fetchTasksUser.pending, (state) => {
+                state.loading = true;
+                state.message = '';
+            })
+            .addCase(fetchTasksUser.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchTasksUser.rejected, (state, action) => {
+                state.loading = false;
+                state.message = action.payload || 'Error al cargar las tareas de la orden';
+            })
+
         // Create Order
         builder
             .addCase(createOrderSlice.pending, (state) => {
@@ -167,11 +276,29 @@ const orderSlice = createSlice({
                 state.processMessage = action.payload || 'Error al editar la orden';
                 state.success = false;
             })
+
+        // Edit Task
+        builder
+            .addCase(editTaskSlice.pending, (state) => {
+                state.loading = true;
+                state.processMessage = '';
+            })
+            .addCase(editTaskSlice.fulfilled, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload.message || 'Tarea editada exitosamente';
+                state.success = true;
+            })
+            .addCase(editTaskSlice.rejected, (state, action) => {
+                state.loading = false;
+                state.processMessage = action.payload || 'Error al editar la tarea';
+                state.success = false;
+            })
     }
 })
 
 export const { setParams, clearMessage, clearProcessMessageOrder, setSuccessOrder } = orderSlice.actions;
 
+export const selectOrders = (state: any) => state.orders.orders;
 export const selectOrderLoading = (state: any) => state.orders.loading;
 export const selectOrderSuccess = (state: any) => state.orders.success;
 export const selectOrderMessage = (state: any) => state.orders.message;

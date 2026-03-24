@@ -13,11 +13,23 @@ export type Question = {
     description: string
     required: number
     question_type_id: number
-    responses?: string[]
+    questionType?: QuestionType
+    responses?: string[] | Array<{
+        id: number
+        value: string
+    }>    
 }
 
 export type QuestionType = {
     id?: number
     name: string
     description: string
+}
+
+export type TaskForm = {
+    value?: string
+    tasks_id: number
+    forms_id: number
+    questions_id: number
+    responses_id?: number
 }

@@ -3,16 +3,16 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch } from '../../../store'
+import { AppDispatch } from '../../../../store'
 import { useSession } from 'next-auth/react'
-import { clearProcessMessageOrder, createOrderSlice, editOrderSlice, fetchOrderById, selectOrderLoading, selectOrderProcessMessage, selectOrderSuccess, setSuccessOrder } from '../../../store/slices/ordersSlice'
-import Inputs from '../../../components/inputs'
+import { clearProcessMessageOrder, createOrderSlice, editOrderSlice, fetchOrderById, selectOrderLoading, selectOrderProcessMessage, selectOrderSuccess, setSuccessOrder } from '../../../../store/slices/ordersSlice'
+import Inputs from '../../../../components/inputs'
 import useClienteInfo from '@/src/hooks/useClienteInfo'
 import useBranchInfo from '@/src/hooks/useBranchInfo'
-import TaskBuilder from '../../../components/taskBuilder';
-import { Order } from '../../../types/orders';
-import { fillToastInfo } from '../../../store/slices/toastSlice';
-import Iconos from '../../../components/ui/hooks/iconos';
+import TaskBuilder from '../../../../components/taskBuilder';
+import { Order } from '../../../../types/orders';
+import { fillToastInfo } from '../../../../store/slices/toastSlice';
+import Iconos from '../../../../components/ui/hooks/iconos';
 import { useParams } from 'next/navigation';
 import useEquipmentInfo from '@/src/hooks/useEquipmentInfo';
 import useOrderTypes from '@/src/hooks/useOrderTypes';

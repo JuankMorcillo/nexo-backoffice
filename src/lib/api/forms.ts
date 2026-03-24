@@ -1,4 +1,4 @@
-import { Form } from "@/src/app/types/forms";
+import { Form, TaskForm } from "@/src/app/types/forms";
 import { FetchApi } from "./fetchApi";
 
 
@@ -66,6 +66,26 @@ export async function editForm(token: string, data: Form) {
     const options: OptionsProps = {
         endpoint: `forms/${data.id}/withQuestions`,
         method: 'PATCH' as const,
+        headers: {
+            Authorization: 'bearer ' + token,
+        },
+        body: data
+    }
+
+    try {
+        return await FetchApi(options);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+
+}
+
+export async function responseForm(token: string, data: TaskForm[]) {
+
+    const options: OptionsProps = {
+        endpoint: `tasks-forms`,
+        method: 'POST' as const,
         headers: {
             Authorization: 'bearer ' + token,
         },
